@@ -1,12 +1,14 @@
 package models;
 import java.io.*;
 
-public class Person implements Serializable, Comparable<Person>{
+public class Person implements Serializable{
 	private String name;
 	private char gender;
 	private int birthYear;
 	private String mother;
 	private String father;
+	private Person motherObject;
+	private Person fatherObject;
 	
 	/**
 	 * Constructor for a person
@@ -68,11 +70,27 @@ public class Person implements Serializable, Comparable<Person>{
 	public void setFather(String father) {
 		this.father = father;
 	}
+
+	public Person getMotherObject() {
+		return motherObject;
+	}
+
+	public void setMotherObject(Person motherObject) {
+		this.motherObject = motherObject;
+	}
+
+	public Person getFatherObject() {
+		return fatherObject;
+	}
+
+	public void setFatherObject(Person fatherObject) {
+		this.fatherObject = fatherObject;
+	}
 	
 	/**
 	 * Compares People based on their frequency.
 	 */
-	@Override
+	/*@Override
 	public int compareTo(Person person) {
 		if (birthYear > person.birthYear)
 			return 1;
@@ -81,5 +99,5 @@ public class Person implements Serializable, Comparable<Person>{
 		else
 			return 0;
 	}
-	
+	*/
 }

@@ -1,8 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.EmptyStackException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,10 +26,35 @@ public class FileReaderTest {
 	public void readFileTest() {
 		testFileReader.readFile(validTester);
 		
-		assertEquals(Fixtures.people[0].getName(), testFileReader.people.get(0).getName());
-		assertEquals(Fixtures.people[0].getBirthYear(), testFileReader.people.get(0).getBirthYear());
-		assertEquals(Fixtures.people[0].getFather(), testFileReader.people.get(0).getFather());
+		assertEquals(Fixtures.people[6].getName(), testFileReader.getPeopleStack().peek().getName());
+		assertEquals(Fixtures.people[6].getBirthYear(), testFileReader.getPeopleStack().peek().getBirthYear());
+		assertEquals(Fixtures.people[6].getFather(), testFileReader.getPeopleStack().peek().getFather());
 		
+		//Check that an IndexOutOfBoundsException is thrown for invalid array index.
+		try{
+			testFileReader.getPeopleStack().clear();
+			testFileReader.getPeopleStack().peek().getName();
+			fail("Expected error not thrown");
+		}
+		catch(EmptyStackException e){
+			assertTrue(true);
+		}
+	}
+	
+	/**
+	 * Test that parents are being added as fields of a Person object
+	 * A pointer is made from a person and a parent (person Object)
+	 * Check that the name of the parent object for the array of people is correct
+	 */
+	@Test 
+	public void buildConnectionsTest(){
+		testFileReader.readFile(validTester);
+		testFileReader.buildConnections();
+
+		assertEquals(Fixtures.parentsNames[0], testFileReader.getPeopleMap().get("Ralph").getFatherObject().getName());
+		assertEquals(Fixtures.parentsNames[1], testFileReader.getPeopleMap().get("Brennan").getFatherObject().getName());
+		assertEquals(Fixtures.parentsNames[2], testFileReader.getPeopleMap().get("Franklin").getMotherObject().getName());
+		assertEquals(Fixtures.parentsNames[3], testFileReader.getPeopleMap().get("Franklin").getFatherObject().getName());
 	}
 
 }
