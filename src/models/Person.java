@@ -1,7 +1,7 @@
 package models;
 import java.io.*;
 
-public class Person implements Serializable{
+public class Person implements Serializable, Comparable<Person>{
 	private String name;
 	private char gender;
 	private int birthYear;
@@ -67,6 +67,19 @@ public class Person implements Serializable{
 
 	public void setFather(String father) {
 		this.father = father;
+	}
+	
+	/**
+	 * Compares People based on their frequency.
+	 */
+	@Override
+	public int compareTo(Person person) {
+		if (birthYear > person.birthYear)
+			return 1;
+		else if (birthYear < person.birthYear)
+			return -1;
+		else
+			return 0;
 	}
 	
 }
