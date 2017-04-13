@@ -104,6 +104,32 @@ public class FileReader {
 		
 	}
 	
+	/**
+	 * If the removedPerson was the parent of another person, change the relevant parentObject field to null
+	 * Then delete the Person object
+	 * @param removedPerson
+	 */
+	public void remove(Person removedPerson){
+		Iterator<Entry<String, Person>> it = peopleMap.entrySet().iterator();
+		while (it.hasNext()) {
+		    Map.Entry<String, Person> people = (Map.Entry<String, Person>)it.next();
+		    if(removedPerson.getGender() == 'M'){
+		    	if(people.getValue().getFather().equals(removedPerson.getName())){
+		    		people.getValue().setFatherObject(null);
+		    	}
+		    }
+		    else{
+		    	if(people.getValue().getMother().equals(removedPerson.getName())){
+		    		people.getValue().setMotherObject(null);
+		    	}
+		    }
+		    System.out.println(people.getKey() + " = " + people.getValue());
+		}
+		
+		Person temp = peopleMap.get(removedPerson.getName());
+		peopleMap.remove(temp.getName());
+	}
+	
 	public static void main(String[] args){
 		FileReader filer = new FileReader();
 		filer.readFile(smallData);

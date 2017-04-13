@@ -84,4 +84,21 @@ public class FileReaderTest {
 		assertEquals(added2.getName(), testFileReader.getPeopleMap().get("Dion").getMotherObject().getName());
 	}
 
+	/**
+	 * Marianna is the mother of Franklin : remove her
+	 * Check that Franklin's mother object now points to null 
+	 * Also check that Marianna's Person object is no longer contained in the HashMap
+	 */
+	@Test
+	public void removeTest(){
+		testFileReader.readFile(validTester);
+		testFileReader.buildConnections();
+		Person toBeRemoved = testFileReader.getPeopleMap().get("Franklin").getMotherObject();
+		testFileReader.remove(toBeRemoved);
+		
+		assertEquals(null, testFileReader.getPeopleMap().get("Franklin").getMotherObject());
+		assertFalse(testFileReader.getPeopleMap().containsKey("Marianna"));
+		assertFalse(testFileReader.getPeopleMap().containsValue(toBeRemoved));
+
+	}
 }
