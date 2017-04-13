@@ -2,8 +2,9 @@ package models;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Stack;
 
@@ -35,7 +36,7 @@ public class FileReader {
 				String[] allWords = wordDetails.split(delim);
 				
 				if(allWords.length > 4){
-					Person person = new Person(allWords[0], allWords[1].charAt(0), Integer.parseInt(allWords[2]), allWords[3], allWords[4]);
+					Person person = new Person(allWords[0], allWords[1].charAt(0), Integer.parseInt(allWords[2]), allWords[3], allWords[4], null, null);
 					peopleStack.push(person);
 					peopleMap.put(person.getName(), person);
 					System.out.println(person.toString());
@@ -69,6 +70,38 @@ public class FileReader {
 				System.out.println("Mom added");
 			}
 		}
+	}
+	
+	/**
+	 * Check if the parents of the new person are in the map, if so, add them as parentObjects
+	 * Check it the new person is a parent of anyone else. If so, add him/her as a parentObject
+	 * @param addedPerson
+	 */
+	public void add(Person addedPerson){		
+		peopleStack.push(addedPerson); //TODO USE something other than a stack because I need to check if new person is a parent of any person
+		peopleMap.put(addedPerson.getName(), addedPerson);
+		buildConnections();		//as the only item in the stack, get the parents from the map
+		
+		/*for each member of the map, if addedPerson's gender = f, check if the mother is of the same name
+		if addedPerson's gender = m, check is the father is of the same name
+		if so, add the addedPerson as a parent to that person*/
+		Iterator<Entry<String, Person>> it = peopleMap.entrySet().iterator();
+		while (it.hasNext()) {
+		    Map.Entry<String, Person> people = (Map.Entry<String, Person>)it.next();
+		    if(addedPerson.getGender() == 'M'){
+		    	if(people.getValue().getFather().equals(addedPerson.getName())){
+		    		people.getValue().setFatherObject(addedPerson);
+		    	}
+		    }
+		    else{
+		    	if(people.getValue().getMother().equals(addedPerson.getName())){
+		    		people.getValue().setMotherObject(addedPerson);
+		    	}
+		    }
+		    System.out.println(people.getKey() + " = " + people.getValue());
+		}
+		System.out.println("Hashmap Size = " + peopleMap.size());
+		
 	}
 	
 	public static void main(String[] args){
