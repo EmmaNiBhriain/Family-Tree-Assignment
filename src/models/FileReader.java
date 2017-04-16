@@ -177,9 +177,10 @@ public class FileReader {
 	}
 	
 	public static void main(String[] args){
-		FileReader filer = new FileReader();
-		filer.readFile(smallData);
-		filer.buildConnections();
+		//FileReader filer = new FileReader();
+		//filer.readFile(smallData);
+		//filer.buildConnections();
+		UserInterface ui = new UserInterface();
 	}
 
 	public Stack<Person> getPeopleStack() {
