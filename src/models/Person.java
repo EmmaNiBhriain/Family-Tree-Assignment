@@ -18,13 +18,18 @@ public class Person implements Serializable{
 	 * @param mother
 	 * @param father
 	 */
-	public Person(String name, char gender, int birthYear, String mother, String father){
+	public Person(String name, char gender, int birthYear, String mother, String father, Person motherObject, Person fatherObject){
 		this.name = name; 
 		this.gender = gender;
 		this.birthYear = birthYear;
 		this.mother = mother;
 		this.father = father;
+		this.motherObject = motherObject;
+		this.fatherObject = fatherObject;
 	}
+	
+	
+	
 	
 	@Override
 	public String toString(){

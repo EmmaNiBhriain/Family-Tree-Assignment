@@ -51,6 +51,7 @@ public class FileReader {
 	 * For each person, if their father is known, get the father object from the hashmap,
 	 * add it to the current person as a father Node.
 	 * Do the same for the mother.
+	 * TODO error checking for when a parent is not in the map but is not ?, null pointer exception?
 	 */
 	public void buildConnections(){
 		while(peopleStack.size() != 0){
@@ -128,6 +129,51 @@ public class FileReader {
 		
 		Person temp = peopleMap.get(removedPerson.getName());
 		peopleMap.remove(temp.getName());
+	}
+	
+	/**
+	 * Change details of a Person.
+	 * If the parameters are not null, update the relevant fields.
+	 * If updating a parent, it is necessary to check if the new parent is in the Hashmap and if so, 
+	 * point the relevant parent object field to the parent object.
+	 * TODO if a parent is changed, make the changes for any siblings who point to the same person object
+	 * TODO if a parent name is changed, change the parent name in the field for the child
+	 * @param person
+	 * @param name
+	 * @param gender
+	 * @param birthYear
+	 * @param mother
+	 * @param father
+	 */
+	public void modify(Person person, String name, char gender, int birthYear, String mother, String father){
+		if(name!= null){
+			person.setName(name);
+		}
+		if(gender != ' '){
+			person.setGender(gender);
+		}
+		if(birthYear!= 0){
+			person.setBirthYear(birthYear);
+		}
+		if(mother!= null){
+			person.setMother(mother);
+			if(peopleMap.containsKey(mother)){
+				Person tempMother = peopleMap.get(mother);
+				person.setMotherObject(tempMother);
+			}
+			else
+				person.setMotherObject(null);
+		}
+		if(father!= null){
+			person.setFather(father);
+			if(peopleMap.containsKey(father)){
+				Person tempFather = peopleMap.get(father);
+				person.setFatherObject(tempFather);
+			}
+			else
+				person.setFatherObject(null);		
+		}
+		
 	}
 	
 	public static void main(String[] args){

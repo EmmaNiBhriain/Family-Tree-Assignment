@@ -88,6 +88,7 @@ public class FileReaderTest {
 	 * Marianna is the mother of Franklin : remove her
 	 * Check that Franklin's mother object now points to null 
 	 * Also check that Marianna's Person object is no longer contained in the HashMap
+	 * TODO test that the same works when removing a father.
 	 */
 	@Test
 	public void removeTest(){
@@ -101,4 +102,31 @@ public class FileReaderTest {
 		assertFalse(testFileReader.getPeopleMap().containsValue(toBeRemoved));
 
 	}
+	
+	/**
+	 * Change the name and gender of Brady and make sure it updates.
+	 * Change the birth year of Franklin
+	 * Change the mother of 
+	 * Change the father of 
+	 */
+	@Test 
+	public void modifyTest(){
+		testFileReader.readFile(validTester);
+		testFileReader.buildConnections();
+		
+		Person nameChange = testFileReader.getPeopleMap().get("Brady");
+		testFileReader.modify(nameChange, "Billy",' ', 0, null, null);
+		assertEquals("Billy", testFileReader.getPeopleMap().get("Brennan").getFatherObject().getName());
+		
+	}
+	/*Ralph M 1939 ? Marquise
+			Brennan M 1941 ? Brady
+			Franklin M 1889 Marianna Andre
+			Marquise M 1908 ? ?
+			Dion M 1888 Abril ?
+			Samara F 1938 ? Marquise
+			Brady M 1917 ? Justin
+			Marianna F 1851 ? ?
+			Andre M 1852 ? ?
+			Brennen M 1867 ? ?*/
 }
