@@ -18,7 +18,8 @@ public class UserInterface implements ActionListener{
 		//displayMainMenu();
 		//displayAddMenu();
 		//displayRemoveMenu();
-		displayModifyMenu();
+		//displayModifyMenu();
+		displayViewMenu();
 	}
 	
 	public void makeFrame(){
@@ -70,6 +71,17 @@ public class UserInterface implements ActionListener{
 		ModifierInterface modifyMenu = new ModifierInterface(contentPane);
 		
 		JPanel displayPane = modifyMenu.getModifyPanel();
+		contentPane = displayPane;
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	public void displayViewMenu(){
+		JPanel contentPane = (JPanel)frame.getContentPane();
+		contentPane.setLayout(new BorderLayout(10,0));
+		DisplayInterface modifyMenu = new DisplayInterface(contentPane);
+		
+		JPanel displayPane = modifyMenu.getViewPanel();
 		contentPane = displayPane;
 		frame.pack();
 		frame.setVisible(true);

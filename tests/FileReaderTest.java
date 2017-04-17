@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import models.FileReader;
 import models.Person;
+import models.TreePrinter;
 
 public class FileReaderTest {
 	private FileReader testFileReader = new FileReader();
@@ -23,7 +24,7 @@ public class FileReaderTest {
 	 * Test that the program reads in the data provided and creates People objects from them.
 	 * Check that an error is thrown if the file does not exist.
 	 */
-	@Test
+	//@Test
 	public void readFileTest() {
 		testFileReader.readFile(validTester);
 		int lastIndex = Fixtures.people.length - 1;
@@ -47,7 +48,7 @@ public class FileReaderTest {
 	 * A pointer is made from a person and a parent (person Object)
 	 * Check that the name of the parent object for the array of people is correct
 	 */
-	@Test 
+	//@Test 
 	public void buildConnectionsTest(){
 		testFileReader.readFile(validTester);
 		testFileReader.buildConnections();
@@ -63,7 +64,7 @@ public class FileReaderTest {
 	 * Check that he appears as a father Object for Brady's object and also that he appears as a son to Brennen
 	 * i.e. Justin's fatherObject points to Brennan's object
 	 */
-	@Test
+	//@Test
 	public void addTest(){
 		testFileReader.readFile(validTester);
 		testFileReader.buildConnections();
@@ -90,16 +91,16 @@ public class FileReaderTest {
 	 * Also check that Marianna's Person object is no longer contained in the HashMap
 	 * TODO test that the same works when removing a father.
 	 */
-	@Test
+	//@Test
 	public void removeTest(){
 		testFileReader.readFile(validTester);
 		testFileReader.buildConnections();
-		Person toBeRemoved = testFileReader.getPeopleMap().get("Franklin").getMotherObject();
-		testFileReader.remove(toBeRemoved);
+		//Person toBeRemoved = testFileReader.getPeopleMap().get("Franklin").getMotherObject();
+		testFileReader.remove("Marianna");
 		
 		assertEquals(null, testFileReader.getPeopleMap().get("Franklin").getMotherObject());
 		assertFalse(testFileReader.getPeopleMap().containsKey("Marianna"));
-		assertFalse(testFileReader.getPeopleMap().containsValue(toBeRemoved));
+		//assertFalse(testFileReader.getPeopleMap().containsValue("Franklin"));
 
 	}
 	
@@ -109,7 +110,7 @@ public class FileReaderTest {
 	 * Change the mother of 
 	 * Change the father of 
 	 */
-	@Test 
+	//@Test 
 	public void modifyTest(){
 		testFileReader.readFile(validTester);
 		testFileReader.buildConnections();
@@ -129,4 +130,25 @@ public class FileReaderTest {
 			Marianna F 1851 ? ?
 			Andre M 1852 ? ?
 			Brennen M 1867 ? ?*/
+	
+	
+	
+	@Test 
+	public void viewAncestorsTest(){
+		testFileReader.readFile(validTester);
+		testFileReader.buildConnections();
+		
+		Person viewFamily = testFileReader.getPeopleMap().get("Franklin");
+		//testFileReader.viewAncestors(viewFamily, " ");
+		
+		Person viewFamily1 = testFileReader.getPeopleMap().get("Brennan");
+		//testFileReader.viewAncestors(viewFamily1, " ");
+		
+		Person viewFamily2 = testFileReader.getPeopleMap().get("Isis");
+		//testFileReader.viewAncestors(viewFamily2, " ");
+		TreePrinter.print(viewFamily);
+		
+	}
+	
+	
 }

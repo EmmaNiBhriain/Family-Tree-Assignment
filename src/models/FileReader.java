@@ -16,6 +16,7 @@ public class FileReader {
 	private Stack<Person> peopleStack = new Stack<Person>();
 	private Map<String, Person> peopleMap = new HashMap<String, Person>();
 
+	private boolean DEBUG = false;
 	
 	public FileReader(){
 		readFile(smallData);
@@ -41,10 +42,10 @@ public class FileReader {
 					Person person = new Person(allWords[0], allWords[1].charAt(0), Integer.parseInt(allWords[2]), allWords[3], allWords[4], null, null);
 					peopleStack.push(person);
 					peopleMap.put(person.getName(), person);
-					System.out.println(person.toString());
+					if(DEBUG==true)System.out.println(person.toString());
 				}
 			}
-			System.out.println("Hashmap size: " + peopleMap.size());
+			if(DEBUG == true)System.out.println("Hashmap size: " + peopleMap.size());
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not read from file" + e);
 		}
@@ -65,13 +66,13 @@ public class FileReader {
 			if(!father.equals("?")){
 				Person validDad = peopleMap.get(father);
 				child.setFatherObject(validDad);
-				System.out.println("Dad added");
+				if(DEBUG==true)System.out.println("Dad added");
 			}
 			
 			if(!mother.equals("?")){
 				Person validMom = peopleMap.get(mother);
 				child.setMotherObject(validMom);
-				System.out.println("Mom added");
+				if(DEBUG==true)System.out.println("Mom added");
 			}
 		}
 	}
@@ -102,9 +103,9 @@ public class FileReader {
 		    		people.getValue().setMotherObject(addedPerson);
 		    	}
 		    }
-		    System.out.println(people.getKey() + " = " + people.getValue());
+		    if(DEBUG==true)System.out.println(people.getKey() + " = " + people.getValue());
 		}
-		System.out.println("Hashmap Size = " + peopleMap.size());
+		if(DEBUG==true)System.out.println("Hashmap Size = " + peopleMap.size());
 		
 	}
 	
@@ -130,11 +131,11 @@ public class FileReader {
 		    		people.getValue().setMotherObject(null);
 		    	}
 		    }
-		    System.out.println(people.getKey() + " = " + people.getValue());
+		    if(DEBUG==true)System.out.println(people.getKey() + " = " + people.getValue());
 		}
 		
 		//Person temp = peopleMap.get(removedPerson.getName());
-		peopleMap.remove(removedPerson);
+		peopleMap.remove(name);
 	}
 	
 	/**
@@ -182,11 +183,43 @@ public class FileReader {
 		
 	}
 	
+	
+	public void viewAncestors(Person root, String indent){
+		if (root == null)
+			return;
+		System.out.println(" " + indent + root.getName());
+		if ((root.getFatherObject() != null) && (root.getMotherObject() == null)){
+			if(!root.getMother().equals("?"))
+				System.out.println("  " + indent + root.getMother());
+			viewAncestors(root.getFatherObject(), indent + " ");
+		}
+		else if ((root.getMotherObject() != null) && (root.getFatherObject() == null)){
+			if(!root.getFather().equals("?"))
+				System.out.println("  " + indent + root.getFather());
+			viewAncestors(root.getMotherObject(), indent + " ");
+		}
+		else if ((root.getMotherObject() != null) && (root.getFatherObject() != null)) {
+			Person left = root.getFatherObject();
+			viewAncestors(root.getMotherObject(), indent + " ");
+			viewAncestors(left, indent + " ");
+		}
+		else if((root.getMotherObject() == null) && (root.getFatherObject() == null)){
+			if(!root.getFather().equals("?"))
+				System.out.println("  " + indent + root.getFather());
+			if(!root.getMother().equals("?"))
+				System.out.println("  " + indent + root.getMother());
+		}
+	}
+	
+	
+	
 	public static void main(String[] args){
-		//FileReader filer = new FileReader();
+		FileReader filer = new FileReader();
+		Person viewFamily1 = filer.getPeopleMap().get("Isis");
+		TreePrinter.print(viewFamily1);
 		//filer.readFile(smallData);
 		//filer.buildConnections();
-		UserInterface ui = new UserInterface();
+		//UserInterface ui = new UserInterface();
 		//MenuInterface menu = new MenuInterface();
 	}
 

@@ -40,7 +40,7 @@ public class ModifierInterface implements ActionListener{
 	private String title = "Family Tree";
 
 	
-	Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
+	private Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
 
 
 	
@@ -57,7 +57,7 @@ public class ModifierInterface implements ActionListener{
 		panel.add(middlePanel, BorderLayout.CENTER);
 		panel.add(bottomPanel, BorderLayout.SOUTH);
 				
-		instructions = new JLabel("Enter Name of Person to Remove");
+		instructions = new JLabel("Enter Name of Person to Modify");
 		name = new JTextField(10);
 		confirm = new JButton("OK");
 		confirm.addActionListener(this);
