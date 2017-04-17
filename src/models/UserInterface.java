@@ -16,7 +16,9 @@ public class UserInterface implements ActionListener{
 	public UserInterface(){
 		makeFrame();
 		//displayMainMenu();
-		displayAddMenu();
+		//displayAddMenu();
+		//displayRemoveMenu();
+		displayModifyMenu();
 	}
 	
 	public void makeFrame(){
@@ -50,6 +52,28 @@ public class UserInterface implements ActionListener{
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	public void displayRemoveMenu(){
+		JPanel contentPane = (JPanel)frame.getContentPane();
+		contentPane.setLayout(new BorderLayout(10,0));
+		RemovalInterface removalMenu = new RemovalInterface(contentPane);
+		
+		JPanel displayPane = removalMenu.getRemovePanel();
+		contentPane = displayPane;
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	public void displayModifyMenu(){
+		JPanel contentPane = (JPanel)frame.getContentPane();
+		contentPane.setLayout(new BorderLayout(10,0));
+		ModifierInterface modifyMenu = new ModifierInterface(contentPane);
+		
+		JPanel displayPane = modifyMenu.getModifyPanel();
+		contentPane = displayPane;
+		frame.pack();
+		frame.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -67,4 +91,12 @@ public class UserInterface implements ActionListener{
 		else if(command.equals("View")){
 			System.out.println("View");
 		}	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
 }

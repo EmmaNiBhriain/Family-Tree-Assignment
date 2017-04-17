@@ -18,6 +18,8 @@ public class FileReader {
 
 	
 	public FileReader(){
+		readFile(smallData);
+		buildConnections();
 		
 	}
 	
@@ -42,6 +44,7 @@ public class FileReader {
 					System.out.println(person.toString());
 				}
 			}
+			System.out.println("Hashmap size: " + peopleMap.size());
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not read from file" + e);
 		}
@@ -110,7 +113,10 @@ public class FileReader {
 	 * Then delete the Person object
 	 * @param removedPerson
 	 */
-	public void remove(Person removedPerson){
+	public void remove(String name){
+		
+		Person removedPerson = peopleMap.get(name);
+		
 		Iterator<Entry<String, Person>> it = peopleMap.entrySet().iterator();
 		while (it.hasNext()) {
 		    Map.Entry<String, Person> people = (Map.Entry<String, Person>)it.next();
@@ -127,8 +133,8 @@ public class FileReader {
 		    System.out.println(people.getKey() + " = " + people.getValue());
 		}
 		
-		Person temp = peopleMap.get(removedPerson.getName());
-		peopleMap.remove(temp.getName());
+		//Person temp = peopleMap.get(removedPerson.getName());
+		peopleMap.remove(removedPerson);
 	}
 	
 	/**
@@ -181,6 +187,7 @@ public class FileReader {
 		//filer.readFile(smallData);
 		//filer.buildConnections();
 		UserInterface ui = new UserInterface();
+		//MenuInterface menu = new MenuInterface();
 	}
 
 	public Stack<Person> getPeopleStack() {

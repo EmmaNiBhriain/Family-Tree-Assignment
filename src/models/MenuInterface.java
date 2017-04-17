@@ -23,9 +23,13 @@ public class MenuInterface implements ActionListener{
 	private String menuButton4 = "View";
 	private JLabel display;
 	private JPanel contentPane;
-
+	private UserInterface user;
 	
 
+	public MenuInterface(){
+		//user = new UserInterface();
+	}
+	
 	public MenuInterface(JPanel panel){
 		contentPane = makePanel(panel);
 	}
@@ -41,8 +45,8 @@ public class MenuInterface implements ActionListener{
 		display = new JLabel("Please Select an operation");
 		buttonPanel.add(display);
 		
-		addMenuItem(buttonPanel, buttons,menuButton1);
-		addMenuItem(buttonPanel, buttons,menuButton2);
+		addMenuItem(buttonPanel, buttons, menuButton1);
+		addMenuItem(buttonPanel, buttons, menuButton2);
 		addMenuItem(buttonPanel, buttons, menuButton3);
 		addMenuItem(buttonPanel, buttons, menuButton4);
 				
@@ -66,6 +70,7 @@ public class MenuInterface implements ActionListener{
 
 		if(command.equals("Add")){
 			System.out.println("add");
+			//user.displayAddMenu();
 		}
 		else if(command.equals("Remove")){
 			System.out.println("Remove");
