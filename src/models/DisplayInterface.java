@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class DisplayInterface implements ActionListener{
@@ -20,6 +21,7 @@ public class DisplayInterface implements ActionListener{
 	private FileReader fileReader;
 	private JPanel viewPanel;
 	private Person viewPerson = new Person(null, ' ', 0, null, null, null, null);
+	private JTextArea textArea = new JTextArea(50,50);
 	
 	private JFrame frame;
 	private String title = "Family Tree";
@@ -57,7 +59,9 @@ public class DisplayInterface implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String findName = name.getText();
 		viewPerson = fileReader.getPeopleMap().get(findName);
-					
+		
+		textArea = TreePrinter.print(viewPerson);
+		
 		frame = new JFrame(title);
 
 		JPanel contentPane = (JPanel)frame.getContentPane();
@@ -74,8 +78,17 @@ public class DisplayInterface implements ActionListener{
 	public JPanel makeNextPanel(JPanel panel){
 		panel.setLayout(new BorderLayout()); 
 
+		JPanel bottom = new JPanel();
+		JPanel top = new JPanel();
+		panel.add(top, BorderLayout.NORTH);
+		panel.add(bottom, BorderLayout.CENTER);
+		
 		instructions = new JLabel("Your Ancestors: ");
-		panel.add(instructions);
+		top.add(instructions);
+		bottom.add(textArea);
+		
+		panel.add(top);
+		panel.add(bottom);
 		
 		return panel;		
 	}

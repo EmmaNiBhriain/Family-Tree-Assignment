@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 public class TreePrinter {
 	
 	private static List<Person> people  = new ArrayList<Person>();
@@ -12,12 +15,14 @@ public class TreePrinter {
 	private static Person unknown = new Person ("unknown", ' ', 0, null, null, null, null);
 	private static Person temp1 = new Person("unknown", ' ', 0, null, null, null, null); 
 	private static Person temp2 = new Person("unknown", ' ', 0, null, null, null, null); 
+	private static JTextArea viewPanel = new JTextArea();
 
 	
-	public static void print(Person root){
+	public static JTextArea print(Person root){
 		people.add(root);
 		height = TreePrinter.getHeight(root);
-		printTree(people, height);
+		viewPanel = printTree(people, height);
+		return viewPanel;
 	}
 	
 	/**
@@ -27,7 +32,7 @@ public class TreePrinter {
 	 * @param levelPeople
 	 * @param level
 	 */
-	private static void printTree(List<Person> levelPeople, int level){
+	private static JTextArea printTree(List<Person> levelPeople, int level){
 		//List<Person> people = new ArrayList<Person>();
 		
 		//indentation for first node of certain level
@@ -39,6 +44,7 @@ public class TreePrinter {
 			Person temp = levelPeople.get(0);
 			//print name
 			System.out.print(temp.getName());
+			viewPanel.append(temp.getName());
 			
 			//spaces between names, depending on the level
 			printSpacing(level);
@@ -88,10 +94,13 @@ public class TreePrinter {
 		}
 		//levelPeople.remove(temp);
 		System.out.println(); //go to a new line
+		viewPanel.append("\n");
 		
 		if(level>2){
 			printTree(people, level-1);
 		}
+		
+		return viewPanel;
 	}
 	
 	/**
@@ -101,8 +110,10 @@ public class TreePrinter {
 	 */
 	private static void printIndent(int level){
 		int g = (int) Math.pow(2, level-1); //2 to the power of the level -1
-		for(int i = g ; i>0; i--)
+		for(int i = g ; i>0; i--){
 			System.out.print(" ");
+			viewPanel.append(" ");
+		}
 	}
 
 	/**
@@ -110,8 +121,10 @@ public class TreePrinter {
 	 */
 	private static void printSpacing(int level){
 		int h = (int) ((Math.pow(2, level-1))*2)-1;
-		for(int i = h; i>0; i--)
+		for(int i = h; i>0; i--){
 			System.out.print(" ");
+			viewPanel.append(" ");
+		}
 	}
 	  
 	/**
