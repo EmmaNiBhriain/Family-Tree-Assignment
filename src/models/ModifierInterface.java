@@ -1,9 +1,11 @@
 package models;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,13 +21,16 @@ public class ModifierInterface implements ActionListener{
 	private JLabel instructions;
 	private JButton confirm;
 	private JTextField name;
-	private FileReader fileReader;
+	private FileReader fileReader = new FileReader();
 	
+	private JPanel Panel0 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel1= new JPanel(new GridLayout(1,2));
 	private JPanel Panel2 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel3 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel4 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel5 = new JPanel(new GridLayout(1,2));
+	private JPanel Panel6 = new JPanel(new GridLayout(1,2));
+
 	private JLabel nameL = new JLabel("Name : ");
 	private JTextField newName = new JTextField (10);
 	private JLabel genderL = new JLabel("Gender : ");
@@ -37,18 +42,35 @@ public class ModifierInterface implements ActionListener{
 	private JLabel motherL = new JLabel("Mother : ");
 	private JTextField mother = new JTextField (10);
 	private JFrame frame;
+	private JFrame frame1;
 	private String title = "Family Tree";
+	private JButton returnButton = new JButton("Return to Main Menu");
+	private JButton menuButton = new JButton("Back to Removal Menu");
+
+	private JLabel display;
+
 
 	
 	private Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
-
-
 	
 	
-	public ModifierInterface(JPanel panel){
-		fileReader = new FileReader();
-		modifyPanel = makePanel(panel);
+	public ModifierInterface(){
+		makeFrame();
 	}
+	
+	public void makeFrame(){
+		frame = new JFrame(title);
+
+		JPanel contentPane = (JPanel)frame.getContentPane();
+		contentPane.setPreferredSize(new Dimension(500, 400));
+		contentPane.setLayout(new BorderLayout(10,0));
+		//TODO set border if you like
+		JPanel displayPane = makePanel(contentPane);
+		contentPane = displayPane;
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
 	
 	public JPanel makePanel(JPanel panel){
 		panel.setLayout(new BorderLayout()); 
@@ -61,9 +83,12 @@ public class ModifierInterface implements ActionListener{
 		name = new JTextField(10);
 		confirm = new JButton("OK");
 		confirm.addActionListener(this);
+		returnButton.addActionListener(this);
+		
 		
 		topPanel.add(instructions);
 		middlePanel.add(name);
+		bottomPanel.add(returnButton);
 		bottomPanel.add(confirm);
 		return panel;
 		
@@ -83,18 +108,21 @@ public class ModifierInterface implements ActionListener{
 		if(e.getActionCommand().equals("OK")){
 			
 			String findName = name.getText();
+			//if()
 			modifyPerson = fileReader.getPeopleMap().get(findName);
 						
-			frame = new JFrame(title);
+			frame1 = new JFrame(title);
 
-			JPanel contentPane = (JPanel)frame.getContentPane();
+			JPanel contentPane = (JPanel)frame1.getContentPane();
 			contentPane.setLayout(new BorderLayout(10,10));
 			//modifyPanel = makeNextPanel();
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+			//frame = new JFrame();
 
 			JPanel displayPane = makeNextPanel(contentPane);
 			contentPane = displayPane;
-			frame.pack();
-			frame.setVisible(true);
+			frame1.pack();
+			frame1.setVisible(true);
 			
 			//modifyPanel = makeNextPanel();
 		}
@@ -147,12 +175,24 @@ public class ModifierInterface implements ActionListener{
 				System.out.println("Error updating name");
 		}
 		
+		else if(e.getActionCommand().equals("Return to Main Menu")){
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+			UserInterface user = new UserInterface();
+		}
+		
+		else if(e.getActionCommand().equals("Back to Removal Menu")){
+			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+			ModifierInterface mod = new ModifierInterface();
+		}
+		
 	}
 	
 	public JPanel makeNextPanel(JPanel panel){
 		//JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(6, 2)); 
 		//contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
+		display = new JLabel("Enter Details");
+		Panel0.add(display);
 		
 		Panel1.add(nameL);
 		addField(Panel1, newName);
@@ -174,15 +214,18 @@ public class ModifierInterface implements ActionListener{
 		JButton okay = new JButton("Update");		
 		okay.addActionListener(this);
 
-		//display = new JLabel("Enter Details");
-		//displayPanel.add(display);
+		menuButton.addActionListener(this);
+
+		Panel6.add(menuButton);
+		Panel6.add(okay);
 		
+		//panel.add(Panel0);
 		panel.add(Panel1);
 		panel.add(Panel2);
 		panel.add(Panel3);
 		panel.add(Panel4);
 		panel.add(Panel5);
-		panel.add(okay);
+		panel.add(Panel6);
 
 		return panel;
 		

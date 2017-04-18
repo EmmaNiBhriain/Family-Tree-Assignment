@@ -1,8 +1,10 @@
 package models;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,18 +20,32 @@ public class DisplayInterface implements ActionListener{
 	private JLabel instructions;
 	private JButton confirm;
 	private JTextField name;
-	private FileReader fileReader;
+	private FileReader fileReader = new FileReader();
 	private JPanel viewPanel;
 	private Person viewPerson = new Person(null, ' ', 0, null, null, null, null);
-	private JTextArea textArea = new JTextArea(50,50);
-	
+	private JTextArea textArea = new JTextArea(10,110);
 	private JFrame frame;
+	private JFrame frame1;
 	private String title = "Family Tree";
-
+	private JButton returnButton = new JButton("Return to Main Menu");
+	private JButton backButton = new JButton("Back");
 	
-	public DisplayInterface(JPanel panel){
-		fileReader = new FileReader();
-		viewPanel = makePanel(panel);
+	
+	public DisplayInterface(){
+		makeFrame();
+	}
+		
+	public void makeFrame(){
+			frame = new JFrame(title);
+
+			JPanel contentPane = (JPanel)frame.getContentPane();
+			contentPane.setPreferredSize(new Dimension(500, 400));
+			contentPane.setLayout(new BorderLayout(10,0));
+			//TODO set border if you like
+			JPanel displayPane = makePanel(contentPane);
+			contentPane = displayPane;
+			frame.pack();
+			frame.setVisible(true);
 	}
 
 	public JPanel makePanel(JPanel panel){
@@ -43,9 +59,11 @@ public class DisplayInterface implements ActionListener{
 		name = new JTextField(10);
 		confirm = new JButton("View");
 		confirm.addActionListener(this);
+		returnButton.addActionListener(this);
 		
 		topPanel.add(instructions);
 		middlePanel.add(name);
+		bottomPanel.add(returnButton);
 		bottomPanel.add(confirm);
 		
 		return panel;
@@ -57,21 +75,35 @@ public class DisplayInterface implements ActionListener{
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		String findName = name.getText();
-		viewPerson = fileReader.getPeopleMap().get(findName);
+		if(event.getActionCommand().equals("View")){
+			String findName = name.getText();
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+			
+			frame1 = new JFrame(title);
+			
+			viewPerson = fileReader.getPeopleMap().get(findName);
+			
+			textArea = TreePrinter.print(viewPerson);
+			
+			
+			JPanel contentPane = (JPanel)frame1.getContentPane();
+			contentPane.setPreferredSize(new Dimension(500, 400));
+			JPanel displayPane = makeNextPanel(contentPane);
+			contentPane = displayPane;
+			frame1.pack();
+			frame1.setVisible(true);
+		}
+		else if(event.getActionCommand().equals("Return to Main Menu")){
+			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+			UserInterface user = new UserInterface();
+		}
 		
-		textArea = TreePrinter.print(viewPerson);
+		else if(event.getActionCommand().equals("Back")){
+			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
+			DisplayInterface view = new DisplayInterface();
+		}
 		
-		frame = new JFrame(title);
-
-		JPanel contentPane = (JPanel)frame.getContentPane();
-		contentPane.setLayout(new BorderLayout(10,10));
-		//modifyPanel = makeNextPanel();
-
-		JPanel displayPane = makeNextPanel(contentPane);
-		contentPane = displayPane;
-		frame.pack();
-		frame.setVisible(true);
+		
 		
 	}
 	
@@ -79,16 +111,22 @@ public class DisplayInterface implements ActionListener{
 		panel.setLayout(new BorderLayout()); 
 
 		JPanel bottom = new JPanel();
+		JPanel middle = new JPanel();
 		JPanel top = new JPanel();
 		panel.add(top, BorderLayout.NORTH);
-		panel.add(bottom, BorderLayout.CENTER);
+		panel.add(middle, BorderLayout.CENTER);
+		panel.add(bottom, BorderLayout.SOUTH);
 		
 		instructions = new JLabel("Your Ancestors: ");
-		top.add(instructions);
-		bottom.add(textArea);
+		backButton.addActionListener(this);
 		
-		panel.add(top);
-		panel.add(bottom);
+		top.add(instructions);
+		middle.add(textArea);
+		bottom.add(backButton);
+		
+		//panel.add(top);
+		//panel.add(middle);
+		//panel.add(bottom);
 		
 		return panel;		
 	}

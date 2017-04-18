@@ -1,7 +1,8 @@
-package models;
+/*package models;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +60,7 @@ public class MenuInterface implements ActionListener{
 	
 	public void addMenuItem(JPanel panel, ButtonGroup bgroup, String menuItem){
 		JRadioButtonMenuItem button = new JRadioButtonMenuItem(menuItem);
+		//button.setSize(new Dimension(80,80));
 		button.addActionListener(this); //method to handle the action is in this class
 		bgroup.add(button);
 		panel.add(button);
@@ -92,4 +94,4 @@ public class MenuInterface implements ActionListener{
 	public void setContentPane(JPanel contentPane) {
 		this.contentPane = contentPane;
 	}
-}
+}*/
