@@ -1,6 +1,8 @@
 package models;
+import java.awt.List;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,6 +17,7 @@ public class FileReader {
 	//private  ArrayList<Person> people = new ArrayList<Person>();
 	private Stack<Person> peopleStack = new Stack<Person>();
 	private Map<String, Person> peopleMap = new HashMap<String, Person>();
+	private Map<String, ArrayList<String>> parentMap = new HashMap<String, ArrayList<String>>(); //Mapping of parent to children
 
 	private boolean DEBUG = false;
 	
@@ -26,7 +29,7 @@ public class FileReader {
 	
 	/**
 	 * Read in the Family Tree data and create a person object from each set of data.
-	 * Add each person to a priority queue sorted by year of birth
+	 * Add each person to a stack.
 	 * Add each person to a Hashmap using their name as a key
 	 */
 	public void readFile(File familyData){
@@ -35,11 +38,11 @@ public class FileReader {
 			inFamily = new Scanner(familyData);
 			String delim = "\\s"; //split fields by a space.
 			while(inFamily.hasNextLine()){
-				String wordDetails = inFamily.nextLine().trim();
-				String[] allWords = wordDetails.split(delim);
+				String personDetails = inFamily.nextLine().trim();
+				String[] allDetails = personDetails.split(delim);
 				
-				if(allWords.length > 4){
-					Person person = new Person(allWords[0], allWords[1].charAt(0), Integer.parseInt(allWords[2]), allWords[3], allWords[4], null, null);
+				if(allDetails.length > 4){
+					Person person = new Person(allDetails[0], allDetails[1].charAt(0), Integer.parseInt(allDetails[2]), allDetails[3], allDetails[4], null, null);
 					peopleStack.push(person);
 					peopleMap.put(person.getName(), person);
 					if(DEBUG==true)System.out.println(person.toString());
@@ -55,6 +58,8 @@ public class FileReader {
 	 * For each person, if their father is known, get the father object from the hashmap,
 	 * add it to the current person as a father Node.
 	 * Do the same for the mother.
+	 * 
+	 * For each parent, add them to a hashmap along with their children.
 	 * TODO error checking for when a parent is not in the map but is not ?, null pointer exception?
 	 */
 	public void buildConnections(){
@@ -66,6 +71,22 @@ public class FileReader {
 			if(!father.equals("?")){
 				Person validDad = peopleMap.get(father);
 				child.setFatherObject(validDad);
+				
+				//if the parentMap does not already contain the parent, add them
+				//else, update the children
+				if(!parentMap.containsKey(father)){
+					ArrayList<String> children = new ArrayList<String>();
+					children.add(child.getName());
+					parentMap.put(father, children);
+				}
+				else{
+					ArrayList<String> temp = parentMap.get(father);
+					if(!temp.contains(child.getName())){
+						temp.add(child.getName());
+						parentMap.replace(father, temp);
+					}
+					
+				}
 				if(DEBUG==true)System.out.println("Dad added");
 			}
 			
@@ -73,6 +94,19 @@ public class FileReader {
 				Person validMom = peopleMap.get(mother);
 				child.setMotherObject(validMom);
 				if(DEBUG==true)System.out.println("Mom added");
+				
+				if(!parentMap.containsKey(mother)){
+					ArrayList<String> children = new ArrayList<String>();
+					children.add(child.getName());
+					parentMap.put(mother, children);
+				}
+				else{
+					ArrayList<String> temp = parentMap.get(mother);
+					if(!temp.contains(child.getName())){
+						temp.add(child.getName());
+						parentMap.replace(father, temp);					
+					}
+				}
 			}
 		}
 	}
@@ -85,26 +119,21 @@ public class FileReader {
 	public void add(Person addedPerson){		
 		peopleStack.push(addedPerson); //TODO USE something other than a stack because I need to check if new person is a parent of any person
 		peopleMap.put(addedPerson.getName(), addedPerson);
-		buildConnections();		//as the only item in the stack, get the parents from the map
+		buildConnections();		//as the only item in the stack, get the parents from the ma
 		
-		/*for each member of the map, if addedPerson's gender = f, check if the mother is of the same name
-		if addedPerson's gender = m, check is the father is of the same name
-		if so, add the addedPerson as a parent to that person*/
-		Iterator<Entry<String, Person>> it = peopleMap.entrySet().iterator();
-		while (it.hasNext()) {
-		    Map.Entry<String, Person> people = (Map.Entry<String, Person>)it.next();
-		    if(addedPerson.getGender() == 'M'){
-		    	if(people.getValue().getFather().equals(addedPerson.getName())){
-		    		people.getValue().setFatherObject(addedPerson);
-		    	}
-		    }
-		    else{
-		    	if(people.getValue().getMother().equals(addedPerson.getName())){
-		    		people.getValue().setMotherObject(addedPerson);
-		    	}
-		    }
-		    if(DEBUG==true)System.out.println(people.getKey() + " = " + people.getValue());
+		//Check if the new person is a parent, if so, get the relevant children objects and add a pointer to the new person
+		if(parentMap.containsKey(addedPerson.getName())){
+			ArrayList<String> temp = parentMap.get(addedPerson.getName());
+			
+			for(String name : temp){
+				Person child = peopleMap.get(name);
+				if(addedPerson.getGender()=='F')
+					child.setMotherObject(addedPerson);
+				else
+					child.setFatherObject(addedPerson);
+			}
 		}
+		
 		if(DEBUG==true)System.out.println("Hashmap Size = " + peopleMap.size());
 		
 	}
@@ -114,27 +143,32 @@ public class FileReader {
 	 * Then delete the Person object
 	 * @param removedPerson
 	 */
-	public void remove(String name){
-		
-		Person removedPerson = peopleMap.get(name);
-		
-		Iterator<Entry<String, Person>> it = peopleMap.entrySet().iterator();
-		while (it.hasNext()) {
-		    Map.Entry<String, Person> people = (Map.Entry<String, Person>)it.next();
-		    if(removedPerson.getGender() == 'M'){
-		    	if(people.getValue().getFather().equals(removedPerson.getName())){
-		    		people.getValue().setFatherObject(null);
-		    	}
-		    }
-		    else{
-		    	if(people.getValue().getMother().equals(removedPerson.getName())){
-		    		people.getValue().setMotherObject(null);
-		    	}
-		    }
-		    if(DEBUG==true)System.out.println(people.getKey() + " = " + people.getValue());
+	public void remove(String name) {
+		if (peopleMap.containsKey(name)) {
+			Person removedPerson = peopleMap.get(name);
+
+			if (parentMap.containsKey(name)) {
+				ArrayList<String> temp = parentMap.get(name);
+
+				if (removedPerson.getGender() == 'M') {
+					for (String child : temp) {
+						Person change = peopleMap.get(child);
+						change.setFatherObject(null);
+					}
+				} else {
+					for (String child : temp) {
+						Person change = peopleMap.get(child);
+						change.setMotherObject(null);
+					}
+				}
+				
+				parentMap.remove(name); //remove the entry for the removed Person in the parent Hashmap.
+			} else
+				System.out.println("Invalid Name");
+
 		}
-		
-		//Person temp = peopleMap.get(removedPerson.getName());
+
+		// Person temp = peopleMap.get(removedPerson.getName());
 		peopleMap.remove(name);
 	}
 	
@@ -154,31 +188,176 @@ public class FileReader {
 	 */
 	public void modify(Person person, String name, char gender, int birthYear, String mother, String father){
 		if(name!= null){
-			person.setName(name);
+			/* remove the person objects from the maps     
+			 * 1. Set the new name as the key for the person in the peopleMap
+			 * 2. For each of the parents of this person, go the the parentMap, retrieve their children collections and replace the old name with the new name
+			 * 3. If the person was a parent, replace the entry in the parentMap with their new name, for each of their children, update their parent Fields
+			 * */
+			//Part1
+			String previousName = person.getName();
+			Person temp = peopleMap.get(previousName);
+			peopleMap.remove(previousName);
+			temp.setName(name);
+			peopleMap.put(name, temp);
+			
+			//Part2
+			String tempMom = temp.getMother();
+			if(!tempMom.equals("?")){
+				ArrayList<String> children =  parentMap.get(tempMom);
+				if(children.contains(previousName)){
+					children.remove(previousName);
+					children.add(name);
+				}
+			}
+			
+			String tempDad = temp.getFather();
+			if(!tempDad.equals("?")){
+				ArrayList<String> children = parentMap.get(tempDad);
+				if(children.contains(previousName)){
+					children.remove(previousName);
+					children.add(name);
+				}
+			}
+			
+			//Part3
+			if(parentMap.containsKey(previousName)){
+				ArrayList<String> children = parentMap.get(previousName);
+				for(String child: children){
+					Person childObj = peopleMap.get(child);
+					if(temp.getGender()=='M'){
+						childObj.setFather(name);
+					}
+					else
+						childObj.setMother(name);
+				}
+				
+				parentMap.remove(previousName);
+				parentMap.put(name, children);
+			}
 		}
+		
+		/*
+		 * Change the gender of the person
+		 * If the person is a parent, and the other parent of their child is unknown, 
+		 * update the child's fields to point the other parent object to the parent
+		 * i.e If Mary is the registered as the father of Paul, and the gender is updated to be male, 
+		 * change Mary to Paul's mother, provided he does not already have a mother
+		 * 
+		 */
 		if(gender != ' '){
-			person.setGender(gender);
+			if(person.getGender()!=gender){
+				char oldGender = person.getGender();
+				person.setGender(gender);
+
+				if(parentMap.containsKey(person.getName())){
+					ArrayList<String> children = parentMap.get(person.getName());
+					for(String childName : children){
+						Person child = peopleMap.get(childName);
+						if(oldGender == 'M'){
+							if(child.getMother().equals("?")){
+								child.setMother(person.getName());
+								child.setFather("?");
+								child.setMotherObject(person);
+								child.setFatherObject(null);
+							}
+						}
+						else if(oldGender == 'F'){
+							if(child.getFather().equals("?")){
+								child.setFather(person.getName());
+								child.setMother("?");
+								child.setFatherObject(person);
+								child.setMotherObject(null);
+							}
+						}
+					}
+				}
+			}
 		}
+		
+		
 		if(birthYear!= 0){
-			person.setBirthYear(birthYear);
+			if(birthYear != person.getBirthYear()){
+				person.setBirthYear(birthYear);
+			}
 		}
+		
+		/*
+		 * If the new mother is in the database, create a pointer from the person to this person
+		 * If the old mother is known, remove this person from her ArrayList in the parentMap
+		 * If the new Mother was already a mother, add this person to her ArrayList of children
+		 * If she is a first time mother, create an entry for her in the parentMap with this person as her only child
+		 * 
+		 */
 		if(mother!= null){
-			person.setMother(mother);
-			if(peopleMap.containsKey(mother)){
-				Person tempMother = peopleMap.get(mother);
-				person.setMotherObject(tempMother);
+			String oldMother = person.getMother();
+			if(!oldMother.equals(mother)){
+				person.setMother(mother);
+				if(peopleMap.containsKey(mother)){
+					Person tempMother = peopleMap.get(mother);
+					person.setMotherObject(tempMother);
+				}
+				else
+					person.setMotherObject(null);
+				
+
+				if((!oldMother.equals("?"))&&(parentMap.containsKey(oldMother))){
+					ArrayList<String> kids = parentMap.get(oldMother);
+					kids.remove(person.getName());
+					if(kids.size()==0)
+						parentMap.remove(oldMother);
+				}
+				
+				if(parentMap.containsKey(mother)){
+					ArrayList<String> mChildren = parentMap.get(mother);
+					mChildren.add(person.getName());
+					parentMap.replace(mother, mChildren);
+				}
+				else{
+					ArrayList<String> newChild = new ArrayList<String>();
+					newChild.add(person.getName());
+					parentMap.put(mother, newChild);
+				}
 			}
-			else
-				person.setMotherObject(null);
 		}
+			
+		
+		/*
+		 * If the new father is in the database, create a pointer from the person to this person
+		 * If the old father is known, remove this person from his ArrayList in the parentMap
+		 * If the new father was already a father, add this person to his ArrayList of children
+		 * If he is a first time father, create an entry for him in the parentMap with this person as his only child
+		 * 
+		 */
 		if(father!= null){
-			person.setFather(father);
-			if(peopleMap.containsKey(father)){
-				Person tempFather = peopleMap.get(father);
-				person.setFatherObject(tempFather);
+			String oldFather = person.getFather();
+			if(!oldFather.equals(father)){
+				person.setFather(father);
+				if(peopleMap.containsKey(father)){
+					Person tempFather = peopleMap.get(father);
+					person.setFatherObject(tempFather);
+				}
+				else
+					person.setFatherObject(null);
+				
+
+				if((!oldFather.equals("?"))&&(parentMap.containsKey(oldFather))){
+					ArrayList<String> kids = parentMap.get(oldFather);
+					kids.remove(person.getName());
+					if(kids.size()==0)
+						parentMap.remove(oldFather);
+				}
+				
+				if(parentMap.containsKey(father)){
+					ArrayList<String> mChildren = parentMap.get(father);
+					mChildren.add(person.getName());
+					parentMap.replace(father, mChildren);
+				}
+				else{
+					ArrayList<String> newChild = new ArrayList<String>();
+					newChild.add(person.getName());
+					parentMap.put(father, newChild);
+				}
 			}
-			else
-				person.setFatherObject(null);		
 		}
 		
 	}
@@ -215,8 +394,8 @@ public class FileReader {
 	
 	public static void main(String[] args){
 		FileReader filer = new FileReader();
-		Person viewFamily1 = filer.getPeopleMap().get("Isis");
-		TreePrinter.print(viewFamily1);
+		//Person viewFamily1 = filer.getPeopleMap().get("Isis");
+		//TreePrinter.print(viewFamily1);
 		//filer.readFile(smallData);
 		//filer.buildConnections();
 		//UserInterface ui = new UserInterface();
@@ -237,6 +416,14 @@ public class FileReader {
 
 	public void setPeopleMap(Map<String, Person> peopleMap) {
 		this.peopleMap = peopleMap;
+	}
+
+	public Map<String, ArrayList<String>> getParentMap() {
+		return parentMap;
+	}
+
+	public void setParentMap(Map<String, ArrayList<String>> parentMap) {
+		this.parentMap = parentMap;
 	}
 
 
