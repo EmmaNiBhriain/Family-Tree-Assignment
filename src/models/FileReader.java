@@ -186,7 +186,7 @@ public class FileReader {
 	 * @param mother
 	 * @param father
 	 */
-	public void modify(Person person, String name, char gender, int birthYear, String mother, String father){
+	public Person modify(Person person, String name, char gender, int birthYear, String mother, String father){
 		if(name!= null){
 			/* remove the person objects from the maps     
 			 * 1. Set the new name as the key for the person in the peopleMap
@@ -195,13 +195,13 @@ public class FileReader {
 			 * */
 			//Part1
 			String previousName = person.getName();
-			Person temp = peopleMap.get(previousName);
+			//Person temp = peopleMap.get(previousName);
 			peopleMap.remove(previousName);
-			temp.setName(name);
-			peopleMap.put(name, temp);
+			person.setName(name);
+			peopleMap.put(name, person);
 			
 			//Part2
-			String tempMom = temp.getMother();
+			String tempMom = person.getMother();
 			if(!tempMom.equals("?")){
 				ArrayList<String> children =  parentMap.get(tempMom);
 				if(children.contains(previousName)){
@@ -210,7 +210,7 @@ public class FileReader {
 				}
 			}
 			
-			String tempDad = temp.getFather();
+			String tempDad = person.getFather();
 			if(!tempDad.equals("?")){
 				ArrayList<String> children = parentMap.get(tempDad);
 				if(children.contains(previousName)){
@@ -224,7 +224,7 @@ public class FileReader {
 				ArrayList<String> children = parentMap.get(previousName);
 				for(String child: children){
 					Person childObj = peopleMap.get(child);
-					if(temp.getGender()=='M'){
+					if(person.getGender()=='M'){
 						childObj.setFather(name);
 					}
 					else
@@ -234,6 +234,7 @@ public class FileReader {
 				parentMap.remove(previousName);
 				parentMap.put(name, children);
 			}
+			
 		}
 		
 		/*
@@ -359,7 +360,7 @@ public class FileReader {
 				}
 			}
 		}
-		
+		return person;
 	}
 	
 	
@@ -398,7 +399,7 @@ public class FileReader {
 		//TreePrinter.print(viewFamily1);
 		//filer.readFile(smallData);
 		//filer.buildConnections();
-		//UserInterface ui = new UserInterface();
+		UserInterface ui = new UserInterface();
 		//MenuInterface menu = new MenuInterface();
 	}
 

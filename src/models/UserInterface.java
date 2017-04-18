@@ -1,6 +1,6 @@
 package models;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,13 +18,12 @@ public class UserInterface implements ActionListener{
 		//displayMainMenu();
 		//displayAddMenu();
 		//displayRemoveMenu();
-		//displayModifyMenu();
-		displayViewMenu();
+		displayModifyMenu();
+		//displayViewMenu();
 	}
 	
 	public void makeFrame(){
 		frame = new JFrame(title);
-		
 		//JPanel contentPane = (JPanel)frame.getContentPane();
 		//contentPane.setLayout(new BorderLayout(10,0)); 
 		//contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10))
@@ -33,7 +32,8 @@ public class UserInterface implements ActionListener{
 	public void displayMainMenu(){
 		
 		JPanel contentPane = (JPanel)frame.getContentPane();
-		contentPane.setLayout(new BorderLayout(10,0)); 
+		contentPane.setPreferredSize(new Dimension(500, 400));
+		contentPane.setLayout(new BorderLayout(10,10)); 
 		contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
 		MenuInterface menu = new MenuInterface(contentPane);
 		

@@ -100,14 +100,51 @@ public class ModifierInterface implements ActionListener{
 		}
 		
 		else if(e.getActionCommand().equals("Update")){
-			String newName = name.getText();
-			char newGender = gender.getText().charAt(0);
-			int newYear = Integer.parseInt(birthYear.getText());
-			String newFather = father.getText();
-			String newMother = mother.getText();
+			String nameChange;
+			char newGender;
+			int newYear;
+			String newFather;
+			String newMother;
 			
-			fileReader.modify(modifyPerson, newName, newGender, newYear, newFather, newMother);
-			System.out.println("Update complete");
+			if(newName.getText().equals("")){
+				nameChange = null;
+			}
+			else
+				nameChange = newName.getText();
+			
+			
+			if(gender.getText().equals("")){
+				newGender = ' ';
+			}
+			else
+				 newGender = gender.getText().charAt(0);
+			
+			
+			if(birthYear.getText().equals("")){
+				newYear = 0;
+			}
+			else
+				newYear = Integer.parseInt(birthYear.getText());
+			
+			if(father.getText().equals("")){
+				newFather = null;
+			}
+			else
+				newFather = father.getText();
+			
+			if(mother.getText().equals("")){
+				newMother = null;
+			}
+			else
+				newMother = mother.getText();
+			
+			
+			System.out.println("Inserted text fields : " + nameChange + " " + newGender+ " " + newYear + " " + newFather + " " + newMother);
+			modifyPerson = fileReader.modify(modifyPerson, nameChange, newGender, newYear, newFather, newMother);
+			if(!fileReader.getPeopleMap().containsKey(modifyPerson))
+				System.out.println("Update complete," + modifyPerson.getName());
+			else
+				System.out.println("Error updating name");
 		}
 		
 	}
