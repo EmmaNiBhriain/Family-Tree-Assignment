@@ -126,10 +126,6 @@ public class DisplayInterface implements ActionListener{
 		middle.add(textArea);
 		bottom.add(backButton);
 		
-		//panel.add(top);
-		//panel.add(middle);
-		//panel.add(bottom);
-		
 		return panel;		
 	}
 

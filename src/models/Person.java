@@ -92,17 +92,5 @@ public class Person implements Serializable{
 		this.fatherObject = fatherObject;
 	}
 	
-	/**
-	 * Compares People based on their frequency.
-	 */
-	/*@Override
-	public int compareTo(Person person) {
-		if (birthYear > person.birthYear)
-			return 1;
-		else if (birthYear < person.birthYear)
-			return -1;
-		else
-			return 0;
-	}
-	*/
+	
 }

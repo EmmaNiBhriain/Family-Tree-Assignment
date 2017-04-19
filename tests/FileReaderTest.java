@@ -139,8 +139,9 @@ public class FileReaderTest {
 	 * Change Marianna's name to Mary
 	 * Check that Marianna is not a key for either the peopleMap or the parentMap
 	 * Check that Franklin's mother field is updated
-	 * Check that Frankling still points to the correct object
+	 * Check that Franklin still points to the correct object
 	 * Check that Mary is now a key for the HashMaps
+	 * Check that Mary is now the name field for Marianna's Person object
 	 */
 	@Test
 	public void modifyNameTest(){
@@ -157,6 +158,8 @@ public class FileReaderTest {
 		
 		assertTrue(testFileReader6.getParentMap().containsKey("Mary"));
 		assertTrue(testFileReader6.getPeopleMap().containsKey("Mary"));
+		
+		assertEquals("Mary", change.getName());
 
 	}
 	

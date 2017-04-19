@@ -12,13 +12,19 @@ public class UserInterface implements ActionListener{
 	//private MenuInterface menu = new MenuInterface();
 	private String title = "Family Tree";
 	private JFrame frame; 
-	private String menuButton1 = "Add";
-	private String menuButton2 = "Remove";
-	private String menuButton3 = "Modify";
-	private String menuButton4 = "View";
+	private JRadioButtonMenuItem addButton = new JRadioButtonMenuItem("Add");
+	private JRadioButtonMenuItem removeButton = new JRadioButtonMenuItem("Remove");
+	private JRadioButtonMenuItem modifyButton = new JRadioButtonMenuItem("Modify");
+	private JRadioButtonMenuItem viewButton = new JRadioButtonMenuItem("View");
+	private JRadioButtonMenuItem saveButton = new JRadioButtonMenuItem("Save Changes to File");
+	private JRadioButtonMenuItem loadButton = new JRadioButtonMenuItem("Load saved File");
+	private JButton confirm = new JButton("OK");
 	private JLabel display;
 	private FileReader fileReader;
 
+	/**
+	 * Default Constructor, uses the data from the original database file
+	 */
 	public UserInterface(){
 		fileReader = new FileReader();
 		makeFrame();
@@ -55,11 +61,16 @@ public class UserInterface implements ActionListener{
 		display = new JLabel("Please Select an operation");
 		buttonPanel.add(display);
 		
-		addMenuItem(buttonPanel, buttons, menuButton1);
-		addMenuItem(buttonPanel, buttons, menuButton2);
-		addMenuItem(buttonPanel, buttons, menuButton3);
-		addMenuItem(buttonPanel, buttons, menuButton4);
-				
+		addMenuItem(buttonPanel, buttons, addButton);
+		addMenuItem(buttonPanel, buttons, removeButton);
+		addMenuItem(buttonPanel, buttons, modifyButton);
+		addMenuItem(buttonPanel, buttons, viewButton);
+		addMenuItem(buttonPanel, buttons, saveButton);
+		addMenuItem(buttonPanel, buttons, loadButton);
+		
+		confirm.addActionListener(this);
+		buttonPanel.add(confirm);
+		
 		contentPane.add(buttonPanel); //add in the centre
 
 		
@@ -67,12 +78,12 @@ public class UserInterface implements ActionListener{
 
 	}
 	
-	public void addMenuItem(JPanel panel, ButtonGroup bgroup, String menuItem){
-		JRadioButtonMenuItem button = new JRadioButtonMenuItem(menuItem);
-		//button.setSize(new Dimension(80,80));
-		button.addActionListener(this); //method to handle the action is in this class
-		bgroup.add(button);
-		panel.add(button);
+	public void addMenuItem(JPanel panel, ButtonGroup bgroup, JRadioButtonMenuItem menuItem){
+		//JRadioButtonMenuItem button = new JRadioButtonMenuItem(menuItem);
+		//menuItem.setSize(new Dimension(80,80));
+		//button.addActionListener(this); //method to handle the action is in this class
+		bgroup.add(menuItem);
+		panel.add(menuItem);
 	}
 	
 	public void displayMainMenu(){
@@ -111,26 +122,38 @@ public class UserInterface implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 
-		if(command.equals("Add")){
+		if(addButton.isSelected()){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			System.out.println("add");
 			displayAddMenu();
 		}
-		else if(command.equals("Remove")){
+		else if(removeButton.isSelected()){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			System.out.println("Remove");
 			displayRemoveMenu();
 		}
-		else if(command.equals("Modify")){
+		else if(modifyButton.isSelected()){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			System.out.println("Modify");
 			displayModifyMenu();
 		}
-		else if(command.equals("View")){
+		else if(viewButton.isSelected()){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			System.out.println("View");
 			displayViewMenu();
 		}	
+		else if(saveButton.isSelected()){
+			Serializer writeData = new Serializer(fileReader);
+			writeData.writeToFile();
+			writeData.close();
+		}
+		else if(loadButton.isSelected()){
+			Serializer readData = new Serializer();
+			readData.readFromFile();
+			readData.closeInputs();
+			fileReader.setParentMap(readData.getInParents());
+			fileReader.setPeopleMap(readData.getInPeople());
+		}
 	}
 
 	public JFrame getFrame() {
