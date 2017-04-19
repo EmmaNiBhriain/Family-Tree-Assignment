@@ -21,7 +21,7 @@ public class ModifierInterface implements ActionListener{
 	private JLabel instructions;
 	private JButton confirm;
 	private JTextField name;
-	private FileReader fileReader = new FileReader();
+	private FileReader fileReader;
 	
 	private JPanel Panel0 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel1= new JPanel(new GridLayout(1,2));
@@ -54,7 +54,8 @@ public class ModifierInterface implements ActionListener{
 	private Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
 	
 	
-	public ModifierInterface(){
+	public ModifierInterface(FileReader reader){
+		fileReader = reader;
 		makeFrame();
 	}
 	
@@ -177,12 +178,12 @@ public class ModifierInterface implements ActionListener{
 		
 		else if(e.getActionCommand().equals("Return to Main Menu")){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
-			UserInterface user = new UserInterface();
+			UserInterface user = new UserInterface(fileReader);
 		}
 		
 		else if(e.getActionCommand().equals("Back to Removal Menu")){
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
-			ModifierInterface mod = new ModifierInterface();
+			ModifierInterface mod = new ModifierInterface(fileReader);
 		}
 		
 	}

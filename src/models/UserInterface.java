@@ -17,9 +17,21 @@ public class UserInterface implements ActionListener{
 	private String menuButton3 = "Modify";
 	private String menuButton4 = "View";
 	private JLabel display;
-
+	private FileReader fileReader;
 
 	public UserInterface(){
+		fileReader = new FileReader();
+		makeFrame();
+		displayMainMenu();
+	}
+	
+	/**
+	 * Constructor for displaying the user interface when returning from another interface
+	 * A new file reader is not required
+	 * @param reader
+	 */
+	public UserInterface(FileReader reader){
+		fileReader = reader;
 		makeFrame();
 		displayMainMenu();
 	}
@@ -78,21 +90,21 @@ public class UserInterface implements ActionListener{
 	
 	public void displayAddMenu(){
 		
-		AddPersonInterface addui = new AddPersonInterface();
+		AddPersonInterface addui = new AddPersonInterface(fileReader);
 	}
 	
 	public void displayRemoveMenu(){
-		RemovalInterface removalMenu = new RemovalInterface();
+		RemovalInterface removalMenu = new RemovalInterface(fileReader);
 		
 	}
 	
 	public void displayModifyMenu(){
 
-		ModifierInterface modify = new ModifierInterface();
+		ModifierInterface modify = new ModifierInterface(fileReader);
 	}
 	
 	public void displayViewMenu(){
-		DisplayInterface dis = new DisplayInterface();
+		DisplayInterface dis = new DisplayInterface(fileReader);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class DisplayInterface implements ActionListener{
 	private JLabel instructions;
 	private JButton confirm;
 	private JTextField name;
-	private FileReader fileReader = new FileReader();
+	private FileReader fileReader;
 	private JPanel viewPanel;
 	private Person viewPerson = new Person(null, ' ', 0, null, null, null, null);
 	private JTextArea textArea = new JTextArea(10,110);
@@ -31,7 +31,8 @@ public class DisplayInterface implements ActionListener{
 	private JButton backButton = new JButton("Back");
 	
 	
-	public DisplayInterface(){
+	public DisplayInterface(FileReader reader){
+		fileReader = reader;
 		makeFrame();
 	}
 		
@@ -95,12 +96,13 @@ public class DisplayInterface implements ActionListener{
 		}
 		else if(event.getActionCommand().equals("Return to Main Menu")){
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-			UserInterface user = new UserInterface();
+			UserInterface user = new UserInterface(fileReader);
 		}
 		
 		else if(event.getActionCommand().equals("Back")){
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
-			DisplayInterface view = new DisplayInterface();
+			textArea.setText(null);
+			DisplayInterface view = new DisplayInterface(fileReader);
 		}
 		
 		

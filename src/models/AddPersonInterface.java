@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class AddPersonInterface implements ActionListener{
-	private FileReader filereader = new FileReader();
+	private FileReader fileReader;
 	private JLabel nameL = new JLabel("Name : ");
 	private JTextField name = new JTextField (10);
 	private JLabel genderL = new JLabel("Gender : ");;
@@ -43,7 +43,8 @@ public class AddPersonInterface implements ActionListener{
 
 
 
-	public AddPersonInterface(){
+	public AddPersonInterface(FileReader reader){
+		fileReader = reader;
 		makeFrame();
 	}
 	
@@ -124,13 +125,13 @@ public class AddPersonInterface implements ActionListener{
 			String newMother = mother.getText();
 			
 			Person newPerson = new Person(newName, newGender, newYear, newFather, newMother, null, null);
-			filereader.add(newPerson);
+			fileReader.add(newPerson);
 		}
 		
 		else if(event.getActionCommand().equals("Return to Main Menu")){
 			//close this window
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
-			UserInterface user = new UserInterface();
+			UserInterface user = new UserInterface(fileReader);
 		}
 		
 
