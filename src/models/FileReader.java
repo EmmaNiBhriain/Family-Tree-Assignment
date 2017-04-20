@@ -1,4 +1,9 @@
 package models;
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.awt.List;
 import java.io.File;
 import java.io.FileNotFoundException;

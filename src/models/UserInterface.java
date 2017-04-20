@@ -1,4 +1,9 @@
 package models;
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -23,7 +28,7 @@ public class UserInterface implements ActionListener{
 	private FileReader fileReader;
 
 	/**
-	 * Default Constructor, uses the data from the original database file
+	 * Default Constructor, uses the data from the original database file and displays a menu with a list of options
 	 */
 	public UserInterface(){
 		fileReader = new FileReader();
@@ -78,6 +83,13 @@ public class UserInterface implements ActionListener{
 
 	}
 	
+	/**
+	 * Add a JRadioButton to a button group to ensure only one can be selected at a time
+	 * Also add the button to the panel
+	 * @param panel
+	 * @param bgroup
+	 * @param menuItem
+	 */
 	public void addMenuItem(JPanel panel, ButtonGroup bgroup, JRadioButtonMenuItem menuItem){
 		//JRadioButtonMenuItem button = new JRadioButtonMenuItem(menuItem);
 		//menuItem.setSize(new Dimension(80,80));
@@ -99,25 +111,40 @@ public class UserInterface implements ActionListener{
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Display the menu that will allow users to add a person to the system
+	 */
 	public void displayAddMenu(){
 		
 		AddPersonInterface addui = new AddPersonInterface(fileReader);
 	}
 	
+	/**
+	 * Display the menu that will allow users to remove a person from the system
+	 */
 	public void displayRemoveMenu(){
 		RemovalInterface removalMenu = new RemovalInterface(fileReader);
 		
 	}
 	
+	/**
+	 * Display the menu that will allow users to modify a person on the system
+	 */
 	public void displayModifyMenu(){
 
 		ModifierInterface modify = new ModifierInterface(fileReader);
 	}
 	
+	/**
+	 * Display the user interface that will allow a user to view a person's family
+	 */
 	public void displayViewMenu(){
 		DisplayInterface dis = new DisplayInterface(fileReader);
 	}
 
+	/**
+	 * Depending on the option selected from the menu of options, open the relevant user interface
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();

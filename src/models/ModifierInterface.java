@@ -1,5 +1,9 @@
 package models;
-
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -54,7 +58,10 @@ public class ModifierInterface implements ActionListener{
 	private JLabel display;
 	private Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
 	
-	
+	/**
+	 * Constructor for the user interface that allows the user to make changes to an existing person
+	 * @param reader
+	 */
 	public ModifierInterface(FileReader reader){
 		fileReader = reader;
 		makeFrame();
@@ -104,6 +111,11 @@ public class ModifierInterface implements ActionListener{
 		this.modifyPanel = modifyPanel;
 	}
 
+	/**
+	 * Allows the user to select the name of the person they wish to modify
+	 * If this Person is not on the system, a warning dialog box appears
+	 * Otherwise, a form will appear with the person's existing details and the user may then change these details and save the changes
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		

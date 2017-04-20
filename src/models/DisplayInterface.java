@@ -1,5 +1,9 @@
 package models;
-
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -46,7 +50,10 @@ public class DisplayInterface implements ActionListener{
 	private boolean showFather = false;
 	private boolean showMother = false;
 	
-	
+	/**
+	 * Constructor for the interface that displays a person's relations and family tree
+	 * @param reader
+	 */
 	public DisplayInterface(FileReader reader){
 		fileReader = reader;
 		makeFrame();
@@ -89,6 +96,7 @@ public class DisplayInterface implements ActionListener{
 	/**
 	 * When a name has been selected and the button to "View" their ancestry has been pressed, 
 	 * open the view to show them their heritage 
+	 * If a person wishes to view their parents' details, a window appears that shows each parent's details, if known
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {

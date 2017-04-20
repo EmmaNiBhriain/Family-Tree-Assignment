@@ -1,4 +1,9 @@
 package models;
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.io.*;
 
 public class Person implements Serializable{

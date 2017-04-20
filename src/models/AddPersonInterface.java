@@ -1,4 +1,9 @@
 package models;
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -46,11 +51,15 @@ public class AddPersonInterface implements ActionListener{
 	private JButton returnButton = new JButton("Return to Main Menu");
 
 
-
+	/**
+	 * Constructor for the User Interface that allows the user to add a person to the program
+	 * @param reader
+	 */
 	public AddPersonInterface(FileReader reader){
 		fileReader = reader;
 		makeFrame();
 	}
+	
 	
 	public void makeFrame(){
 		frame = new JFrame(title);
@@ -66,6 +75,11 @@ public class AddPersonInterface implements ActionListener{
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Returns the JPanel with a selection of labels and fields to be filled out
+	 * @param panel
+	 * @return
+	 */
 	public JPanel makePanel(JPanel panel){
 		
 		panel.setLayout(new GridLayout(7, 2)); 
@@ -117,6 +131,10 @@ public class AddPersonInterface implements ActionListener{
 		panel.add(text);
 	}
 
+	/**
+	 * If the "Add" button is pressed, a new person is created using the input information 
+	 * Connections are made between this person and their relatives if their relatives are stored in the program
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getActionCommand().equals("Add")){

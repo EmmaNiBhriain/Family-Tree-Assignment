@@ -1,5 +1,9 @@
 package models;
-
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *  
+ */
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +44,9 @@ public class Serializer {
 		}
 	}
 	
+	/**
+	 * Constructor used for reading in saved data
+	 */
 	public Serializer(){
 		try{
 			inByteStream = new FileInputStream(aFile);
@@ -94,6 +101,9 @@ public class Serializer {
 		
 	}
 	
+	/**
+	 * close the input stream
+	 */
 	public void closeInputs(){
 		try{
 			objIStream.close();
@@ -103,6 +113,9 @@ public class Serializer {
 		}
 	}
 	
+	/**
+	 * Close the output stream
+	 */
 	public void close(){
 		try {
 			objOStream.close();

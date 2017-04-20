@@ -1,5 +1,9 @@
 package models;
-
+/**
+ * 
+ * @author Emma Ní Bhriain
+ *
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
