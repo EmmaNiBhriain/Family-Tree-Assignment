@@ -31,13 +31,16 @@ public class ModifierInterface implements ActionListener{
 	private JPanel Panel4 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel5 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel6 = new JPanel(new GridLayout(1,2));
-
+	private JPanel Panel7 = new JPanel(new GridLayout(1,2));
+	
 	private JLabel nameL = new JLabel("Name : ");
 	private JTextField newName;
 	private JLabel genderL = new JLabel("Gender : ");
 	private JTextField gender;
 	private JLabel yearL = new JLabel("Year of Birth : ");
 	private JTextField birthYear;
+	private JLabel deathL = new JLabel("Year of Death : ");
+	private JTextField death;
 	private JLabel fatherL = new JLabel("Father : ");
 	private JTextField father;
 	private JLabel motherL = new JLabel("Mother : ");
@@ -133,6 +136,7 @@ public class ModifierInterface implements ActionListener{
 			String nameChange;
 			char newGender;
 			int newYear;
+			int newDeath;
 			String newFather;
 			String newMother;
 			
@@ -156,6 +160,12 @@ public class ModifierInterface implements ActionListener{
 			else
 				newYear = Integer.parseInt(birthYear.getText());
 			
+			if(death.getText().equals(Integer.toString(modifyPerson.getDeathYear()))){
+				newDeath = 0;
+			}
+			else
+				newDeath = Integer.parseInt(death.getText());
+			
 			if(father.getText().equals(modifyPerson.getFather())){
 				newFather = null;
 			}
@@ -171,6 +181,7 @@ public class ModifierInterface implements ActionListener{
 			
 			System.out.println("Inserted text fields : " + nameChange + " " + newGender+ " " + newYear + " " + newFather + " " + newMother);
 			modifyPerson = fileReader.modify(modifyPerson, nameChange, newGender, newYear, newFather, newMother);
+			modifyPerson.setDeathYear(newDeath);
 			JOptionPane.showMessageDialog(null, "Information successfully updated",  "Success!", JOptionPane.INFORMATION_MESSAGE);
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
 			UserInterface user = new UserInterface(fileReader);
@@ -190,7 +201,7 @@ public class ModifierInterface implements ActionListener{
 	
 	public JPanel makeNextPanel(JPanel panel){
 		//JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(6, 2)); 
+		panel.setLayout(new GridLayout(7, 2)); 
 		//contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
 		display = new JLabel("Enter Details");
 		Panel0.add(display);
@@ -206,6 +217,14 @@ public class ModifierInterface implements ActionListener{
 		Panel3.add(yearL);
 		birthYear = new JTextField(Integer.toString(modifyPerson.getBirthYear()));
 		addField(Panel3, birthYear);
+		
+		Panel7.add(deathL);
+		if(modifyPerson.getDeathYear()==0){
+			death = new JTextField("unknown");
+		}
+		else
+			death = new JTextField(Integer.toString(modifyPerson.getDeathYear()));
+		addField(Panel7, death);
 
 		Panel4.add(fatherL);
 		father = new JTextField(modifyPerson.getFather());
@@ -229,6 +248,7 @@ public class ModifierInterface implements ActionListener{
 		panel.add(Panel1);
 		panel.add(Panel2);
 		panel.add(Panel3);
+		panel.add(Panel7);
 		panel.add(Panel4);
 		panel.add(Panel5);
 		panel.add(Panel6);

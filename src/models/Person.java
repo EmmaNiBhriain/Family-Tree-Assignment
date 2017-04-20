@@ -9,6 +9,7 @@ public class Person implements Serializable{
 	private String father;
 	private Person motherObject;
 	private Person fatherObject;
+	private int deathYear;
 	
 	/**
 	 * Constructor for a person
@@ -26,6 +27,7 @@ public class Person implements Serializable{
 		this.father = father;
 		this.motherObject = motherObject;
 		this.fatherObject = fatherObject;
+		this.deathYear = 0;
 	}
 	
 	
@@ -90,6 +92,23 @@ public class Person implements Serializable{
 
 	public void setFatherObject(Person fatherObject) {
 		this.fatherObject = fatherObject;
+	}
+
+
+
+
+	public int getDeathYear() {
+		return deathYear;
+	}
+
+
+
+
+	public void setDeathYear(int deathYear) {
+		if(deathYear>0)
+			this.deathYear = deathYear;
+		else 
+			this.deathYear = 0;
 	}
 	
 	

@@ -36,6 +36,7 @@ public class DisplayInterface implements ActionListener{
 	private JPanel namePanel;
 	private JPanel genderPanel;
 	private JPanel agePanel;
+	private JPanel deathPanel;
 	private JPanel motherNamePanel;
 	private JPanel fatherNamePanel;
 	private JPanel parentPanel = new JPanel(new GridLayout(1,1));
@@ -95,6 +96,7 @@ public class DisplayInterface implements ActionListener{
 			//makeNextFrame(frame1);
 			namePanel  = new JPanel(new GridLayout(1,1));
 			agePanel = new JPanel(new GridLayout(1,1));
+			deathPanel = new JPanel(new GridLayout(1,1));
 			genderPanel = new JPanel(new GridLayout(1,1));
 			motherNamePanel = new JPanel(new GridLayout(1,1));
 			fatherNamePanel = new JPanel(new GridLayout(1,1));
@@ -111,6 +113,12 @@ public class DisplayInterface implements ActionListener{
 				JLabel infoName = new JLabel("Name: \t" + viewPerson.getName());
 				JLabel infoGender = new JLabel("Gender: \t" + Character.toString(viewPerson.getGender()));
 				JLabel infoYear = new JLabel("Year of Birth: \t" + Integer.toString(viewPerson.getBirthYear()));
+				JLabel infoDeath;
+				if(viewPerson.getDeathYear()==0){
+					infoDeath = new JLabel("Year of Death: \tunknown");
+				}
+				else 
+					infoDeath = new JLabel("Year of Death: \t" + Integer.toString(viewPerson.getDeathYear()));
 				JLabel infoMom = new JLabel("Mother: \t:" + viewPerson.getMother());
 				JLabel infoDad = new JLabel("Father: \t" + viewPerson.getFather());
 				
@@ -121,6 +129,7 @@ public class DisplayInterface implements ActionListener{
 				namePanel.add(infoName);
 				genderPanel.add(infoGender);
 				agePanel.add(infoYear);
+				deathPanel.add(infoDeath);
 				motherNamePanel.add(infoMom);
 				fatherNamePanel.add(infoDad);
 				
@@ -181,6 +190,7 @@ public class DisplayInterface implements ActionListener{
 	public void makeNextFrame(JFrame newFrame){
 		namePanel  = new JPanel(new GridLayout(1,1));
 		agePanel = new JPanel(new GridLayout(1,1));
+		deathPanel = new JPanel(new GridLayout(1,1));
 		genderPanel = new JPanel(new GridLayout(1,1));
 		motherNamePanel = new JPanel(new GridLayout(1,1));
 		fatherNamePanel = new JPanel(new GridLayout(1,1));
@@ -197,12 +207,19 @@ public class DisplayInterface implements ActionListener{
 			JLabel infoName = new JLabel("Name: \t" + viewPerson.getName());
 			JLabel infoGender = new JLabel("Gender: \t" + Character.toString(viewPerson.getGender()));
 			JLabel infoYear = new JLabel("Year of Birth: \t" + Integer.toString(viewPerson.getBirthYear()));
+			JLabel infoDeath;
+			if(viewPerson.getDeathYear()==0){
+				infoDeath = new JLabel("Year of Death: \tunknown");
+			}
+			else 
+				infoDeath = new JLabel("Year of Death: \t" + Integer.toString(viewPerson.getDeathYear()));
 			JLabel infoMom = new JLabel("Mother: \t:" + viewPerson.getMother());
 			JLabel infoDad = new JLabel("Father: \t" + viewPerson.getFather());
 					
 			namePanel.add(infoName);
 			genderPanel.add(infoGender);
 			agePanel.add(infoYear);
+			deathPanel.add(infoDeath);
 			motherNamePanel.add(infoMom);
 			fatherNamePanel.add(infoDad);
 			
@@ -237,10 +254,11 @@ public class DisplayInterface implements ActionListener{
 		//if((showFather == false)&&(showMother == false)){
 			top.add(instructions);
 			
-			JPanel personPanel = new JPanel(new GridLayout(6,1));
+			JPanel personPanel = new JPanel(new GridLayout(7,1));
 			personPanel.add(namePanel);
 			personPanel.add(genderPanel);
 			personPanel.add(agePanel);
+			personPanel.add(deathPanel);
 			personPanel.add(motherNamePanel);
 			personPanel.add(fatherNamePanel);
 			
@@ -254,34 +272,49 @@ public class DisplayInterface implements ActionListener{
 	
 		
 		if(showFather == true){
-			JPanel dadPanel = new JPanel(new GridLayout(6,1));
+			JPanel dadPanel = new JPanel(new GridLayout(7,1));
 			Person father = viewPerson.getFatherObject();
 			JLabel dadName = new JLabel("Father's Name: \t" + father.getName());
 			JLabel dadGender = new JLabel("Gender: \t" + Character.toString(father.getGender()));
 			JLabel dadYear = new JLabel("Year of Birth: \t" + Integer.toString(father.getBirthYear()));
+			JLabel dadDeath; 
+			if(father.getDeathYear()==0){
+				dadDeath = new JLabel("Year of Death: \tunknown");
+			}
+			else
+				dadDeath = new JLabel("Year of Death: \t" + Integer.toString(father.getDeathYear()));
 			JLabel dadFather = new JLabel("Father: \t" + father.getFather());
 			JLabel dadMother = new JLabel("Mother: \t" + father.getMother());
 			
 			dadPanel.add(dadName);
 			dadPanel.add(dadGender);
 			dadPanel.add(dadYear);
+			dadPanel.add(dadDeath);
 			dadPanel.add(dadFather);
 			dadPanel.add(dadMother);
 			middle.add(dadPanel);
 		}
 		
 		if(showMother == true){
-			JPanel momPanel = new JPanel(new GridLayout(6,1));
+			JPanel momPanel = new JPanel(new GridLayout(7,1));
 			Person mother = viewPerson.getMotherObject();
 			JLabel momName = new JLabel("Mother's Name: \t" + mother.getName());
 			JLabel momGender = new JLabel("Gender: \t" + Character.toString(mother.getGender()));
 			JLabel momYear = new JLabel("Year of Birth: \t" + Integer.toString(mother.getBirthYear()));
+			
+			JLabel momDeath;
+			if(mother.getDeathYear() == 0){
+				momDeath = new JLabel("Year of Death: \tunknown");
+			}
+			else 
+				momDeath = new JLabel("Year of Death: \t" + Integer.toString(mother.getDeathYear()));
 			JLabel momFather = new JLabel("Father: \t" + mother.getFather());
 			JLabel momMother = new JLabel("Mother: \t" + mother.getMother());
 			
 			momPanel.add(momName);
 			momPanel.add(momGender);
 			momPanel.add(momYear);
+			momPanel.add(momDeath);
 			momPanel.add(momFather);
 			momPanel.add(momMother);
 

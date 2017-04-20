@@ -20,13 +20,15 @@ public class AddPersonInterface implements ActionListener{
 	private FileReader fileReader;
 	private JLabel nameL = new JLabel("Name : ");
 	private JTextField name = new JTextField (10);
-	private JLabel genderL = new JLabel("Gender : ");;
+	private JLabel genderL = new JLabel("Gender : ");
 	private JTextField gender = new JTextField (10);
-	private JLabel yearL = new JLabel("Year of Birth : ");;
+	private JLabel yearL = new JLabel("Year of Birth : ");
 	private JTextField birthYear = new JTextField (10);
-	private JLabel fatherL = new JLabel("Father : ");;
+	private JLabel deathYearL = new JLabel("Year of Death : ");
+	private JTextField deathYear = new JTextField (10);
+	private JLabel fatherL = new JLabel("Father : ");
 	private JTextField father = new JTextField (10);
-	private JLabel motherL = new JLabel("Mother : ");;
+	private JLabel motherL = new JLabel("Mother : ");
 	private JTextField mother = new JTextField (10);
 	private JPanel AddPanel;
 	private JLabel display;
@@ -36,6 +38,7 @@ public class AddPersonInterface implements ActionListener{
 	private JPanel Panel4 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel5 = new JPanel(new GridLayout(1,2));
 	private JPanel Panel6 = new JPanel(new GridLayout(1,2));
+	private JPanel Panel7 = new JPanel(new GridLayout(1,2));
 	private JFrame frame;
 	private String title = "Family Tree";
 
@@ -65,7 +68,7 @@ public class AddPersonInterface implements ActionListener{
 	
 	public JPanel makePanel(JPanel panel){
 		
-		panel.setLayout(new GridLayout(6, 2)); 
+		panel.setLayout(new GridLayout(7, 2)); 
 		//contentPane.setBorder(new EmptyBorder( 10, 10, 10, 10));
 		
 		Panel1.add(nameL);
@@ -82,6 +85,9 @@ public class AddPersonInterface implements ActionListener{
 		
 		Panel5.add(motherL);
 		addField(Panel5, mother);
+		
+		Panel7.add(deathYearL);
+		addField(Panel7,deathYear);
 				
 		
 		JButton okay = new JButton("Add");		
@@ -99,6 +105,7 @@ public class AddPersonInterface implements ActionListener{
 		panel.add(Panel3);
 		panel.add(Panel4);
 		panel.add(Panel5);
+		panel.add(Panel7);
 		panel.add(Panel6);
 
 		return panel;
@@ -155,8 +162,18 @@ public class AddPersonInterface implements ActionListener{
 			else
 				newMother = mother.getText();
 			
+			int newDeath;
+			if(deathYear.getText().equals("")){
+				newDeath = 0;
+			}
+			else
+				newDeath = Integer.parseInt(deathYear.getText());
+			
+			
 			if(allow == true){
 				Person newPerson = new Person(newName, newGender, newYear, newFather, newMother, null, null);
+				if(newDeath>0)
+					newPerson.setDeathYear(newDeath);
 				if(fileReader.getPeopleMap().containsKey(newPerson.getName())){
 					 JOptionPane.showMessageDialog(null, "Unable to add Person. \nThis person already exists in the database.", "Warning", JOptionPane.ERROR_MESSAGE); 
 				}
