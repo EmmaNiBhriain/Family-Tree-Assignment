@@ -150,9 +150,10 @@ public class UserInterface implements ActionListener{
 		else if(loadButton.isSelected()){
 			Serializer readData = new Serializer();
 			readData.readFromFile();
-			readData.closeInputs();
 			fileReader.setParentMap(readData.getInParents());
 			fileReader.setPeopleMap(readData.getInPeople());
+			readData.closeInputs();
+			
 		}
 	}
 

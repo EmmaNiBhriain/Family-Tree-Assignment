@@ -163,13 +163,15 @@ public class FileReader {
 				}
 				
 				parentMap.remove(name); //remove the entry for the removed Person in the parent Hashmap.
-			} else
-				System.out.println("Invalid Name");
-
+			} else{
+				System.out.println("Not a parent");
+			}
+			peopleMap.remove(name);
 		}
-
+		else
+			System.out.println("Sorry, invalid name");
 		// Person temp = peopleMap.get(removedPerson.getName());
-		peopleMap.remove(name);
+		
 	}
 	
 	/**
