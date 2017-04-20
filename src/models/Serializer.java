@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.JOptionPane;
+
 public class Serializer {
 	private File aFile = new File ("UpdatedData.dat");
 	private ObjectOutputStream objOStream = null;
@@ -62,8 +64,11 @@ public class Serializer {
 			objOStream.writeObject(outParents);
 			objOStream.writeObject(outPeople);
 			System.out.println("Written to file successful");
+			JOptionPane.showMessageDialog(null, "Your changes have been successfully saved",  "Success!", JOptionPane.INFORMATION_MESSAGE);
 		} catch (IOException e) {
 			System.out.println("error writing to file");
+			 JOptionPane.showMessageDialog(null, "Unable to write to file.", "Error", JOptionPane.ERROR_MESSAGE); 
+
 		}
 	}
 	
@@ -76,11 +81,15 @@ public class Serializer {
 			inParents = (Map<String, ArrayList<String>>)objIStream.readObject();
 			inPeople = (Map<String, Person>)objIStream.readObject();
 			System.out.println("File reading successful");
+			JOptionPane.showMessageDialog(null, "File reading complete",  "Success!", JOptionPane.INFORMATION_MESSAGE);
 
 		} catch (IOException e) {
 			System.out.println("Error Reading From File" + e);
+			 JOptionPane.showMessageDialog(null, "Unable to read from file.", "Error", JOptionPane.ERROR_MESSAGE); 
 		} catch (ClassNotFoundException e) {
 			System.out.println("Error loading class");
+			 JOptionPane.showMessageDialog(null, "Unable to read from file.", "Error", JOptionPane.ERROR_MESSAGE); 
+
 		}
 		
 	}

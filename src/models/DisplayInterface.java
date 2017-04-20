@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -134,8 +135,10 @@ public class DisplayInterface implements ActionListener{
 				frame1.pack();
 				frame1.setVisible(true);
 			}
-			else
-				System.out.println("Person does not exist in the database");
+			else{
+				JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
+				DisplayInterface display = new DisplayInterface(fileReader);
+			}
 			
 		}
 		else if(event.getActionCommand().equals("Return to Main Menu")){
@@ -160,6 +163,10 @@ public class DisplayInterface implements ActionListener{
 			if(fileReader.getPeopleMap().containsKey(viewPerson.getMother())){
 				showMother = true;
 				//makeNextFrame();
+			}
+			
+			else if((!fileReader.getPeopleMap().containsKey(viewPerson.getFather()))&&(!fileReader.getPeopleMap().containsKey(viewPerson.getMother()))){
+				JOptionPane.showMessageDialog(null, "This person's parents are not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
 			}
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
 			//frame1.dispose();
@@ -206,9 +213,10 @@ public class DisplayInterface implements ActionListener{
 			newFrame.pack();
 			newFrame.setVisible(true);
 		}
-		else
-			System.out.println("Person does not exist in the database");
-		
+		else{
+			JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
+			DisplayInterface display = new DisplayInterface(fileReader);
+		}
 	}
 	
 	public JPanel makeNextPanel(JPanel panel){

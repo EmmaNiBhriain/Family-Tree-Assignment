@@ -11,6 +11,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -117,15 +118,56 @@ public class AddPersonInterface implements ActionListener{
 			System.out.println("Year of Birth " + birthYear.getText());
 			System.out.println("Father " + father.getText());
 			System.out.println("Mother " + mother.getText());
+			boolean allow;
+			String newName;
+			if(name.getText().equals("")){
+				allow = false;
+				newName = "unknown";
+				JOptionPane.showMessageDialog(null, "Please enter a name", "Error", JOptionPane.ERROR_MESSAGE); 
+			}
+			else{
+				newName = name.getText();
+				allow = true;
+			}
 			
-			String newName = name.getText();
-			char newGender = gender.getText().charAt(0);
-			int newYear = Integer.parseInt(birthYear.getText());
-			String newFather = father.getText();
-			String newMother = mother.getText();
+			char newGender;
+			System.out.println(gender.getText());
+			if((!gender.getText().equalsIgnoreCase(("M")))|(!gender.getText().equalsIgnoreCase("F")))
+				newGender = ' ';
+			else
+				newGender = gender.getText().toUpperCase().charAt(0);
 			
-			Person newPerson = new Person(newName, newGender, newYear, newFather, newMother, null, null);
-			fileReader.add(newPerson);
+			int newYear;
+			if(birthYear.getText().equals(""))
+				newYear = 0;
+			else
+				newYear = Integer.parseInt(birthYear.getText());
+			
+			String newFather;
+			if(father.getText().equals(""))
+				newFather = "?";
+			else
+				newFather = father.getText();
+			
+			String newMother;
+			if(mother.getText().equals(""))
+				newMother = "?";
+			else
+				newMother = mother.getText();
+			
+			if(allow == true){
+				Person newPerson = new Person(newName, newGender, newYear, newFather, newMother, null, null);
+				if(fileReader.getPeopleMap().containsKey(newPerson.getName())){
+					 JOptionPane.showMessageDialog(null, "Unable to add Person. \nThis person already exists in the database.", "Warning", JOptionPane.ERROR_MESSAGE); 
+				}
+				else{
+					fileReader.add(newPerson);
+					JOptionPane.showMessageDialog(null, "You have successfully added a Person",  "Success!", JOptionPane.INFORMATION_MESSAGE);
+					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+					UserInterface user = new UserInterface(fileReader);
+				}
+			}
+		
 		}
 		
 		else if(event.getActionCommand().equals("Return to Main Menu")){

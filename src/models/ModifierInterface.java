@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -48,9 +49,6 @@ public class ModifierInterface implements ActionListener{
 	private JButton menuButton = new JButton("Back to Modifier Menu");
 
 	private JLabel display;
-
-
-	
 	private Person modifyPerson = new Person(null, ' ', 0, null, null, null, null);
 	
 	
@@ -109,21 +107,24 @@ public class ModifierInterface implements ActionListener{
 		if(e.getActionCommand().equals("OK")){
 			
 			String findName = name.getText();
-			//if()
-			modifyPerson = fileReader.getPeopleMap().get(findName);
-						
-			frame1 = new JFrame(title);
+			if(fileReader.getPeopleMap().containsKey(findName)){
+				modifyPerson = fileReader.getPeopleMap().get(findName);
+				
+				frame1 = new JFrame(title);
 
-			JPanel contentPane = (JPanel)frame1.getContentPane();
-			contentPane.setLayout(new BorderLayout(10,10));
-			//modifyPanel = makeNextPanel();
-			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
-			//frame = new JFrame();
+				JPanel contentPane = (JPanel)frame1.getContentPane();
+				contentPane.setLayout(new BorderLayout(10,10));
+				//modifyPanel = makeNextPanel();
+				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+				//frame = new JFrame();
 
-			JPanel displayPane = makeNextPanel(contentPane);
-			contentPane = displayPane;
-			frame1.pack();
-			frame1.setVisible(true);
+				JPanel displayPane = makeNextPanel(contentPane);
+				contentPane = displayPane;
+				frame1.pack();
+				frame1.setVisible(true);
+			}
+			else
+				JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
 			
 			//modifyPanel = makeNextPanel();
 		}
@@ -170,10 +171,9 @@ public class ModifierInterface implements ActionListener{
 			
 			System.out.println("Inserted text fields : " + nameChange + " " + newGender+ " " + newYear + " " + newFather + " " + newMother);
 			modifyPerson = fileReader.modify(modifyPerson, nameChange, newGender, newYear, newFather, newMother);
-			if(!fileReader.getPeopleMap().containsKey(modifyPerson))
-				System.out.println("Update complete," + modifyPerson.getName());
-			else
-				System.out.println("Error updating name");
+			JOptionPane.showMessageDialog(null, "Information successfully updated",  "Success!", JOptionPane.INFORMATION_MESSAGE);
+			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
+			UserInterface user = new UserInterface(fileReader);
 		}
 		
 		else if(e.getActionCommand().equals("Return to Main Menu")){
