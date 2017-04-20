@@ -32,20 +32,20 @@ public class ModifierInterface implements ActionListener{
 	private JPanel Panel6 = new JPanel(new GridLayout(1,2));
 
 	private JLabel nameL = new JLabel("Name : ");
-	private JTextField newName = new JTextField (10);
+	private JTextField newName;
 	private JLabel genderL = new JLabel("Gender : ");
-	private JTextField gender = new JTextField (10);
+	private JTextField gender;
 	private JLabel yearL = new JLabel("Year of Birth : ");
-	private JTextField birthYear = new JTextField (10);
+	private JTextField birthYear;
 	private JLabel fatherL = new JLabel("Father : ");
-	private JTextField father = new JTextField (10);
+	private JTextField father;
 	private JLabel motherL = new JLabel("Mother : ");
-	private JTextField mother = new JTextField (10);
+	private JTextField mother;
 	private JFrame frame;
 	private JFrame frame1;
 	private String title = "Family Tree";
 	private JButton returnButton = new JButton("Return to Main Menu");
-	private JButton menuButton = new JButton("Back to Removal Menu");
+	private JButton menuButton = new JButton("Back to Modifier Menu");
 
 	private JLabel display;
 
@@ -135,33 +135,33 @@ public class ModifierInterface implements ActionListener{
 			String newFather;
 			String newMother;
 			
-			if(newName.getText().equals("")){
+			if(newName.getText().equals(modifyPerson.getName())){
 				nameChange = null;
 			}
 			else
 				nameChange = newName.getText();
 			
 			
-			if(gender.getText().equals("")){
+			if(gender.getText().equals(Character.toString(modifyPerson.getGender()))){
 				newGender = ' ';
 			}
 			else
 				 newGender = gender.getText().charAt(0);
 			
 			
-			if(birthYear.getText().equals("")){
+			if(birthYear.getText().equals(Integer.toString(modifyPerson.getBirthYear()))){
 				newYear = 0;
 			}
 			else
 				newYear = Integer.parseInt(birthYear.getText());
 			
-			if(father.getText().equals("")){
+			if(father.getText().equals(modifyPerson.getFather())){
 				newFather = null;
 			}
 			else
 				newFather = father.getText();
 			
-			if(mother.getText().equals("")){
+			if(mother.getText().equals(modifyPerson.getMother())){
 				newMother = null;
 			}
 			else
@@ -181,7 +181,7 @@ public class ModifierInterface implements ActionListener{
 			UserInterface user = new UserInterface(fileReader);
 		}
 		
-		else if(e.getActionCommand().equals("Back to Removal Menu")){
+		else if(e.getActionCommand().equals("Back to Modifier Menu")){
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING)); //close the current window and redisplay the main menu
 			ModifierInterface mod = new ModifierInterface(fileReader);
 		}
@@ -196,18 +196,23 @@ public class ModifierInterface implements ActionListener{
 		Panel0.add(display);
 		
 		Panel1.add(nameL);
+		newName = new JTextField(modifyPerson.getName());
 		addField(Panel1, newName);
 
 		Panel2.add(genderL);
+		gender = new JTextField(Character.toString(modifyPerson.getGender()));
 		addField(Panel2, gender);
 
 		Panel3.add(yearL);
+		birthYear = new JTextField(Integer.toString(modifyPerson.getBirthYear()));
 		addField(Panel3, birthYear);
 
 		Panel4.add(fatherL);
+		father = new JTextField(modifyPerson.getFather());
 		addField(Panel4, father);
 		
 		Panel5.add(motherL);
+		mother = new JTextField(modifyPerson.getMother());
 		addField(Panel5, mother);
 
 		
