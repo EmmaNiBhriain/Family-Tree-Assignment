@@ -404,7 +404,7 @@ public class FileReader {
 	
 	
 	public static void main(String[] args){
-		FileReader filer = new FileReader();
+		//FileReader filer = new FileReader();
 		//Person viewFamily1 = filer.getPeopleMap().get("Isis");
 		//TreePrinter.print(viewFamily1);
 		//filer.readFile(smallData);

@@ -1,4 +1,5 @@
 package userInterfaces;
+
 /**
  * 
  * @author Emma Ní Bhriain
@@ -10,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +25,7 @@ import models.FileReader;
 import models.Person;
 import models.TreePrinter;
 
-public class DisplayInterface implements ActionListener{
+public class DisplayInterface implements ActionListener {
 	private JPanel topPanel = new JPanel();
 	private JPanel middlePanel = new JPanel();
 	private JPanel bottomPanel = new JPanel();
@@ -40,103 +42,110 @@ public class DisplayInterface implements ActionListener{
 	private String title = "Family Tree";
 	private JButton returnButton = new JButton("Return to Main Menu");
 	private JButton backButton = new JButton("Back");
-	
+	JButton viewParents = new JButton("View Parents' Details");
+
 	private JPanel namePanel;
 	private JPanel genderPanel;
 	private JPanel agePanel;
 	private JPanel deathPanel;
 	private JPanel motherNamePanel;
 	private JPanel fatherNamePanel;
-	private JPanel parentPanel = new JPanel(new GridLayout(1,1));
-	
+	private JPanel parentPanel = new JPanel(new GridLayout(0, 1));
+
 	private ActionEvent confirmed;
-	
+
 	private boolean showFather = false;
 	private boolean showMother = false;
-	
+
 	/**
-	 * Constructor for the interface that displays a person's relations and family tree
+	 * Constructor for the interface that displays a person's relations and
+	 * family tree
+	 * 
 	 * @param reader
 	 */
-	public DisplayInterface(FileReader reader){
+	public DisplayInterface(FileReader reader) {
 		fileReader = reader;
 		makeFrame();
 	}
-		
-	public void makeFrame(){
-			frame = new JFrame(title);
 
-			JPanel contentPane = (JPanel)frame.getContentPane();
-			contentPane.setPreferredSize(new Dimension(500, 400));
-			contentPane.setLayout(new BorderLayout(10,0));
-			//TODO set border if you like
-			JPanel displayPane = makePanel(contentPane);
-			contentPane = displayPane;
-			frame.pack();
-			frame.setVisible(true);
+	public void makeFrame() {
+		frame = new JFrame(title);
+
+		JPanel contentPane = (JPanel) frame.getContentPane();
+		contentPane.setPreferredSize(new Dimension(500, 400));
+		contentPane.setLayout(new BorderLayout(10, 0));
+		// TODO set border if you like
+		JPanel displayPane = makePanel(contentPane);
+		contentPane = displayPane;
+		frame.pack();
+		frame.setVisible(true);
 	}
 
-	public JPanel makePanel(JPanel panel){
-		panel.setLayout(new BorderLayout()); 
-		
+	public JPanel makePanel(JPanel panel) {
+		panel.setLayout(new BorderLayout());
+
 		panel.add(topPanel, BorderLayout.NORTH);
 		panel.add(middlePanel, BorderLayout.CENTER);
 		panel.add(bottomPanel, BorderLayout.SOUTH);
-				
+
 		instructions = new JLabel("Enter Name of Person");
 		name = new JTextField(10);
 		confirm = new JButton("View");
 		confirm.addActionListener(this);
 		returnButton.addActionListener(this);
-		
+
+		// viewParents = new JButton("View Parents' Details");
+		// viewParents.addActionListener(this);
+
 		topPanel.add(instructions);
 		middlePanel.add(name);
 		bottomPanel.add(returnButton);
 		bottomPanel.add(confirm);
-		
+
 		return panel;
 	}
-	
+
 	/**
-	 * When a name has been selected and the button to "View" their ancestry has been pressed, 
-	 * open the view to show them their heritage 
-	 * If a person wishes to view their parents' details, a window appears that shows each parent's details, if known
+	 * When a name has been selected and the button to "View" their ancestry has
+	 * been pressed, open the view to show them their heritage If a person
+	 * wishes to view their parents' details, a window appears that shows each
+	 * parent's details, if known
 	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		if(event.getActionCommand().equals("View")){
-			//makeNextFrame(frame1);
-			namePanel  = new JPanel(new GridLayout(1,1));
-			agePanel = new JPanel(new GridLayout(1,1));
-			deathPanel = new JPanel(new GridLayout(1,1));
-			genderPanel = new JPanel(new GridLayout(1,1));
-			motherNamePanel = new JPanel(new GridLayout(1,1));
-			fatherNamePanel = new JPanel(new GridLayout(1,1));
-			//frame1 = new JFrame();
-			//makeNextFrame(frame1);
-			//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		if (event.getActionCommand().equals("View")) {
+			// makeNextFrame(frame1);
+			namePanel = new JPanel(new GridLayout(1, 1));
+			agePanel = new JPanel(new GridLayout(1, 1));
+			deathPanel = new JPanel(new GridLayout(1, 1));
+			genderPanel = new JPanel(new GridLayout(1, 1));
+			motherNamePanel = new JPanel(new GridLayout(1, 1));
+			fatherNamePanel = new JPanel(new GridLayout(1, 1));
+			// frame1 = new JFrame();
+			// makeNextFrame(frame1);
+			// frame.dispatchEvent(new WindowEvent(frame,
+			// WindowEvent.WINDOW_CLOSING));
 			String findName = name.getText();
-			
+
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-			
+
 			frame1 = new JFrame(title);
-			if(fileReader.getPeopleMap().containsKey(findName)){
+			if (fileReader.getPeopleMap().containsKey(findName)) {
 				viewPerson = fileReader.getPeopleMap().get(findName);
 				JLabel infoName = new JLabel("Name: \t" + viewPerson.getName());
 				JLabel infoGender = new JLabel("Gender: \t" + Character.toString(viewPerson.getGender()));
 				JLabel infoYear = new JLabel("Year of Birth: \t" + Integer.toString(viewPerson.getBirthYear()));
 				JLabel infoDeath;
-				if(viewPerson.getDeathYear()==0){
+				if (viewPerson.getDeathYear() == 0) {
 					infoDeath = new JLabel("Year of Death: \tunknown");
-				}
-				else 
+				} else
 					infoDeath = new JLabel("Year of Death: \t" + Integer.toString(viewPerson.getDeathYear()));
 				JLabel infoMom = new JLabel("Mother: \t:" + viewPerson.getMother());
 				JLabel infoDad = new JLabel("Father: \t" + viewPerson.getFather());
-				
-				JButton viewParents = new JButton("View Parents' Details");
+
+				// JButton viewParents = new JButton("View Parents' Details");
 				viewParents.addActionListener(this);
-						
+
 				textArea = TreePrinter.print(viewPerson);
 				namePanel.add(infoName);
 				genderPanel.add(infoGender);
@@ -144,160 +153,251 @@ public class DisplayInterface implements ActionListener{
 				deathPanel.add(infoDeath);
 				motherNamePanel.add(infoMom);
 				fatherNamePanel.add(infoDad);
-				
-				JPanel parentButtonP = new JPanel();
-				parentButtonP.add(viewParents);
-				parentPanel.add(parentButtonP, BorderLayout.WEST);
-				
-				JPanel contentPane = (JPanel)frame1.getContentPane();
+
+				JPanel allButtons = new JPanel(new GridLayout(8, 1));
+				JButton viewSiblings = new JButton("View Person's Siblings");
+				viewSiblings.addActionListener(this);
+
+				JButton viewCousins = new JButton("View Person's Cousins");
+				viewCousins.addActionListener(this);
+
+				JButton viewParentSiblings = new JButton("View Aunts and Uncles");
+				viewParentSiblings.addActionListener(this);
+
+				JButton viewGrandParentSiblings = new JButton("View Great-Aunts and Uncles");
+				viewGrandParentSiblings.addActionListener(this);
+
+				allButtons.add(viewSiblings);
+				allButtons.add(viewCousins);
+				allButtons.add(viewParentSiblings);
+				allButtons.add(viewGrandParentSiblings);
+				allButtons.add(viewParents);
+
+				/*
+				 * JPanel parentButtonP = new JPanel();
+				 * parentButtonP.add(viewParents);
+				 */
+				parentPanel.add(allButtons, BorderLayout.EAST);
+
+				JPanel contentPane = (JPanel) frame1.getContentPane();
 				contentPane.setPreferredSize(new Dimension(700, 500));
-				//JPanel displayPane = makeNextPanel(contentPane);
+				// JPanel displayPane = makeNextPanel(contentPane);
 				contentPane = makeNextPanel(contentPane);
 				frame1.pack();
 				frame1.setVisible(true);
-			}
-			else{
-				JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
+			} else {
+				JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				DisplayInterface display = new DisplayInterface(fileReader);
 			}
-			
-		}
-		else if(event.getActionCommand().equals("Return to Main Menu")){
+
+		} else if (event.getActionCommand().equals("Return to Main Menu")) {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			UserInterface user = new UserInterface(fileReader);
 		}
-		
-		else if(event.getActionCommand().equals("Back")){
+
+		else if (event.getActionCommand().equals("Back")) {
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
-			//frame2.dispatchEvent(new WindowEvent(frame2, WindowEvent.WINDOW_CLOSING));
+			// frame2.dispatchEvent(new WindowEvent(frame2,
+			// WindowEvent.WINDOW_CLOSING));
 
 			textArea.setText(null);
 			DisplayInterface view = new DisplayInterface(fileReader);
 		}
-		
-		else if(event.getActionCommand().equals("View Parents' Details")){
-			if(fileReader.getPeopleMap().containsKey(viewPerson.getFather())){
-				showFather=true;
-				//makeNextFrame();
+
+		else if (event.getActionCommand().equals("View Parents' Details")) {
+			if (fileReader.getPeopleMap().containsKey(viewPerson.getFather())) {
+				showFather = true;
+				// makeNextFrame();
 			}
-			
-			if(fileReader.getPeopleMap().containsKey(viewPerson.getMother())){
+
+			if (fileReader.getPeopleMap().containsKey(viewPerson.getMother())) {
 				showMother = true;
-				//makeNextFrame();
+				// makeNextFrame();
 			}
-			
-			else if((!fileReader.getPeopleMap().containsKey(viewPerson.getFather()))&&(!fileReader.getPeopleMap().containsKey(viewPerson.getMother()))){
-				JOptionPane.showMessageDialog(null, "This person's parents are not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
+
+			else if ((!fileReader.getPeopleMap().containsKey(viewPerson.getFather()))
+					&& (!fileReader.getPeopleMap().containsKey(viewPerson.getMother()))) {
+				JOptionPane.showMessageDialog(null, "This person's parents are not stored in the system", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
 			frame1.dispatchEvent(new WindowEvent(frame1, WindowEvent.WINDOW_CLOSING));
-			//frame1.dispose();
-			//textArea.setText(null);
+			// frame1.dispose();
+			// textArea.setText(null);
 			frame2 = new JFrame();
 			makeNextFrame(frame2);
+		} else if (event.getActionCommand().equals("View Person's Siblings")) {
+			System.out.println("siblings");
+			if (fileReader.getParentMap().containsKey(viewPerson.getMother())) {
+				ArrayList<String> sibling = fileReader.getParentMap().get(viewPerson.getMother());
+				int motherSide = sibling.size() - 1; // get the number of
+														// children minus the
+														// person
+				sibling.remove(viewPerson.getName());
+
+				if (motherSide > 0) {
+					String[] displaySiblings = sibling.toArray(new String[motherSide]);
+					JOptionPane.showMessageDialog(null, displaySiblings, "Siblings: ", JOptionPane.PLAIN_MESSAGE);
+				}
+			} else if (fileReader.getParentMap().containsKey(viewPerson.getFather())) {
+				ArrayList<String> sibling = fileReader.getParentMap().get(viewPerson.getFather());
+				int fatherSide = sibling.size() - 1; // get the number of
+														// children minus the
+														// person
+				sibling.remove(viewPerson.getName());
+
+				if (fatherSide > 0) {
+					String[] displaySiblings = sibling.toArray(new String[fatherSide]);
+					JOptionPane.showMessageDialog(null, displaySiblings, "Siblings: ", JOptionPane.PLAIN_MESSAGE);
+				}
+
+			}
+
+			else {
+				System.out.println("no siblings");
+			}
+
+		} else if (event.getActionCommand().equals("View Person's Cousins")) {
+			System.out.println("cousins");
+			if (!viewPerson.getMotherObject().equals(null)) {
+				Person mother = viewPerson.getMotherObject();
+
+				if (fileReader.getParentMap().containsKey(mother.getMother())) {
+					ArrayList<String> sibling = fileReader.getParentMap().get(mother.getMother());
+					int motherSide = sibling.size() - 1; // get the number of
+															// children minus
+															// the person
+					sibling.remove(mother.getName());
+
+					if (motherSide > 0) {
+						String[] displaySiblings = sibling.toArray(new String[motherSide]);
+						JOptionPane.showMessageDialog(null, displaySiblings, "Cousins on mother's side: ", JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+
+			}
+			//TODO check father of mother, mother of father, father of father
+
+			if (!viewPerson.getFatherObject().equals(null)) {
+				Person father = viewPerson.getFatherObject();
+				if (fileReader.getParentMap().containsKey(father.getFather())) {
+					ArrayList<String> sibling = fileReader.getParentMap().get(viewPerson.getFather());
+					int fatherSide = sibling.size() - 1; // get the number of
+															// children minus the
+															// person
+					sibling.remove(viewPerson.getName());
+
+					if (fatherSide > 0) {
+						String[] displaySiblings = sibling.toArray(new String[fatherSide]);
+						JOptionPane.showMessageDialog(null, displaySiblings, "Siblings: ", JOptionPane.PLAIN_MESSAGE);
+					}
+
+				}
+			}
+			
+
+			else {
+				System.out.println("no siblings");
+			}
+		} else if (event.getActionCommand().equals("View Aunts and Uncles")) {
+			System.out.println("aunts and uncles");
+
+		} else if (event.getActionCommand().equals("View Great-Aunts and Uncles")) {
+			System.out.println("great aunts and uncles");
+
 		}
-		
-		
+
 	}
-	
-	public void makeNextFrame(JFrame newFrame){
-		namePanel  = new JPanel(new GridLayout(1,1));
-		agePanel = new JPanel(new GridLayout(1,1));
-		deathPanel = new JPanel(new GridLayout(1,1));
-		genderPanel = new JPanel(new GridLayout(1,1));
-		motherNamePanel = new JPanel(new GridLayout(1,1));
-		fatherNamePanel = new JPanel(new GridLayout(1,1));
-		
-		
-		
+
+	public void makeNextFrame(JFrame newFrame) {
+		namePanel = new JPanel(new GridLayout(1, 1));
+		agePanel = new JPanel(new GridLayout(1, 1));
+		deathPanel = new JPanel(new GridLayout(1, 1));
+		genderPanel = new JPanel(new GridLayout(1, 1));
+		motherNamePanel = new JPanel(new GridLayout(1, 1));
+		fatherNamePanel = new JPanel(new GridLayout(1, 1));
+
 		String findName = name.getText();
-		
-		//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-		
+
+		// frame.dispatchEvent(new WindowEvent(frame,
+		// WindowEvent.WINDOW_CLOSING));
+
 		newFrame = new JFrame(title);
-		if(fileReader.getPeopleMap().containsKey(findName)){
+		if (fileReader.getPeopleMap().containsKey(findName)) {
 			viewPerson = fileReader.getPeopleMap().get(findName);
 			JLabel infoName = new JLabel("Name: \t" + viewPerson.getName());
 			JLabel infoGender = new JLabel("Gender: \t" + Character.toString(viewPerson.getGender()));
 			JLabel infoYear = new JLabel("Year of Birth: \t" + Integer.toString(viewPerson.getBirthYear()));
 			JLabel infoDeath;
-			if(viewPerson.getDeathYear()==0){
+			if (viewPerson.getDeathYear() == 0) {
 				infoDeath = new JLabel("Year of Death: \tunknown");
-			}
-			else 
+			} else
 				infoDeath = new JLabel("Year of Death: \t" + Integer.toString(viewPerson.getDeathYear()));
 			JLabel infoMom = new JLabel("Mother: \t:" + viewPerson.getMother());
 			JLabel infoDad = new JLabel("Father: \t" + viewPerson.getFather());
-					
+
 			namePanel.add(infoName);
 			genderPanel.add(infoGender);
 			agePanel.add(infoYear);
 			deathPanel.add(infoDeath);
 			motherNamePanel.add(infoMom);
 			fatherNamePanel.add(infoDad);
-			
-			JPanel contentPane = (JPanel)newFrame.getContentPane();
+
+			JPanel contentPane = (JPanel) newFrame.getContentPane();
 			contentPane.setPreferredSize(new Dimension(700, 500));
-			//JPanel displayPane = makeNextPanel(contentPane);
+			// JPanel displayPane = makeNextPanel(contentPane);
 			contentPane = makeNextPanel(contentPane);
 			newFrame.pack();
 			newFrame.setVisible(true);
-		}
-		else{
-			JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error", JOptionPane.ERROR_MESSAGE); 
+		} else {
+			JOptionPane.showMessageDialog(null, "This person is not stored in the system", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			DisplayInterface display = new DisplayInterface(fileReader);
 		}
 	}
-	
-	public JPanel makeNextPanel(JPanel panel){
-		panel.setLayout(new BorderLayout()); 
-		JPanel middle = new JPanel(new GridLayout(0,3));
-		
+
+	public JPanel makeNextPanel(JPanel panel) {
+		panel.setLayout(new BorderLayout());
+		JPanel middle = new JPanel(new GridLayout(0, 3));
 
 		JPanel bottom = new JPanel();
-		
+
 		JPanel top = new JPanel(new GridLayout());
 		panel.add(top, BorderLayout.NORTH);
 		panel.add(middle, BorderLayout.CENTER);
 		panel.add(bottom, BorderLayout.SOUTH);
-		
+
 		instructions = new JLabel("Your Ancestors: ");
 		backButton.addActionListener(this);
-		
-		//if((showFather == false)&&(showMother == false)){
-			top.add(instructions);
-			
-			JPanel personPanel = new JPanel(new GridLayout(7,1));
-			personPanel.add(namePanel);
-			personPanel.add(genderPanel);
-			personPanel.add(agePanel);
-			personPanel.add(deathPanel);
-			personPanel.add(motherNamePanel);
-			personPanel.add(fatherNamePanel);
-			
-			if((showFather == false)&&(showMother == false)){
-				personPanel.add(parentPanel);
-			}
-				
-			middle.add(personPanel);
-			
-		//}
-	
-		
-		if(showFather == true){
-			JPanel dadPanel = new JPanel(new GridLayout(7,1));
+
+		// if((showFather == false)&&(showMother == false)){
+		top.add(instructions);
+
+		JPanel personPanel = new JPanel(new GridLayout(6, 1));
+		personPanel.add(namePanel);
+		personPanel.add(genderPanel);
+		personPanel.add(agePanel);
+		personPanel.add(deathPanel);
+		personPanel.add(motherNamePanel);
+		personPanel.add(fatherNamePanel);
+		middle.add(personPanel);
+
+		// }
+
+		if (showFather == true) {
+			JPanel dadPanel = new JPanel(new GridLayout(7, 1));
 			Person father = viewPerson.getFatherObject();
 			JLabel dadName = new JLabel("Father's Name: \t" + father.getName());
 			JLabel dadGender = new JLabel("Gender: \t" + Character.toString(father.getGender()));
 			JLabel dadYear = new JLabel("Year of Birth: \t" + Integer.toString(father.getBirthYear()));
-			JLabel dadDeath; 
-			if(father.getDeathYear()==0){
+			JLabel dadDeath;
+			if (father.getDeathYear() == 0) {
 				dadDeath = new JLabel("Year of Death: \tunknown");
-			}
-			else
+			} else
 				dadDeath = new JLabel("Year of Death: \t" + Integer.toString(father.getDeathYear()));
 			JLabel dadFather = new JLabel("Father: \t" + father.getFather());
 			JLabel dadMother = new JLabel("Mother: \t" + father.getMother());
-			
+
 			dadPanel.add(dadName);
 			dadPanel.add(dadGender);
 			dadPanel.add(dadYear);
@@ -306,23 +406,22 @@ public class DisplayInterface implements ActionListener{
 			dadPanel.add(dadMother);
 			middle.add(dadPanel);
 		}
-		
-		if(showMother == true){
-			JPanel momPanel = new JPanel(new GridLayout(7,1));
+
+		if (showMother == true) {
+			JPanel momPanel = new JPanel(new GridLayout(7, 1));
 			Person mother = viewPerson.getMotherObject();
 			JLabel momName = new JLabel("Mother's Name: \t" + mother.getName());
 			JLabel momGender = new JLabel("Gender: \t" + Character.toString(mother.getGender()));
 			JLabel momYear = new JLabel("Year of Birth: \t" + Integer.toString(mother.getBirthYear()));
-			
+
 			JLabel momDeath;
-			if(mother.getDeathYear() == 0){
+			if (mother.getDeathYear() == 0) {
 				momDeath = new JLabel("Year of Death: \tunknown");
-			}
-			else 
+			} else
 				momDeath = new JLabel("Year of Death: \t" + Integer.toString(mother.getDeathYear()));
 			JLabel momFather = new JLabel("Father: \t" + mother.getFather());
 			JLabel momMother = new JLabel("Mother: \t" + mother.getMother());
-			
+
 			momPanel.add(momName);
 			momPanel.add(momGender);
 			momPanel.add(momYear);
@@ -332,15 +431,16 @@ public class DisplayInterface implements ActionListener{
 
 			middle.add(momPanel);
 		}
-		if((showFather == false)&&(showMother == false)){
+		if ((showFather == false) && (showMother == false)) {
 			middle.add(textArea);
+			middle.add(parentPanel);
+
 		}
-		
+
 		bottom.add(backButton);
-		//panel.add(comp)
-		
-		
-		return panel;		
+		// panel.add(comp)
+
+		return panel;
 	}
 
 	public JPanel getViewPanel() {
@@ -350,7 +450,5 @@ public class DisplayInterface implements ActionListener{
 	public void setViewPanel(JPanel viewPanel) {
 		this.viewPanel = viewPanel;
 	}
-	
-	
 
 }

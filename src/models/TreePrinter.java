@@ -16,8 +16,8 @@ public class TreePrinter {
 	private static List<Person> people  = new ArrayList<Person>();
 	
 	private static int height;
-	private static Person unknown = new Person ("unknown", ' ', 0, null, null, null, null);
-	private static Person temp1 = new Person("unknown", ' ', 0, null, null, null, null); 
+	private static Person unknown = new Person ("?", ' ', 0, "?", "?", null, null);
+	private static Person temp1 = new Person("unknown", ' ', 0, "?", null, null, null); 
 	private static Person temp2 = new Person("unknown", ' ', 0, null, null, null, null); 
 	private static JTextArea viewPanel = new JTextArea();
 
@@ -32,20 +32,32 @@ public class TreePrinter {
 	/**
 	 * Print the Tree 
 	 * Pass the root in the List and height of the tree
+	 * 
+	 * 
+	 * Calculate the size of the array for the current layer of the tree by subtracting the level from the height 
+	 * and raise 2 to the power of this value 
+	 * 
+	 * For each member of the array, print out the name of each person stored in it
+	 * 
+	 * 
+	 * 
 	 * TODO use hashmap instead
 	 * @param levelPeople
 	 * @param level
 	 */
 	private static JTextArea printTree(List<Person> levelPeople, int level){
 		//List<Person> people = new ArrayList<Person>();
+		int exponent = height - level;
+		int sizeOfArray = (int)Math.pow(2, exponent);
+		Person[] peopleLayer = new Person[sizeOfArray];
+		
 		
 		//indentation for first node of certain level
-		
 		printIndent(level);
 		int size = levelPeople.size();
 		for(int i =0; i<size; i++){
 		
-			Person temp = levelPeople.get(0);
+			Person temp = levelPeople.get(0);//peopleLayer[i];//levelPeople.get(0);
 			//print name
 			System.out.print(temp.getName());
 			viewPanel.append(temp.getName());
@@ -68,10 +80,15 @@ public class TreePrinter {
 						Person blank = new Person(temp.getFather(), 'M', 0, "?", "?", null, null);
 						levelPeople.add(blank);
 					}
+					else
+						levelPeople.add(unknown);
+					
 					if(!temp.getMother().equals("?")){
 						Person blank = new Person(temp.getMother(), 'F', 0, "?", "?", null, null);
 						levelPeople.add(blank);
 					}
+					else
+						levelPeople.add(unknown);
 					//nothing happens, end of tree
 				}
 				
@@ -81,12 +98,18 @@ public class TreePrinter {
 						Person blank = new Person(temp.getMother(), 'F', 0, "?", "?", null, null);
 						levelPeople.add(blank);
 					}
+					else{
+						levelPeople.add(unknown);
+					}
 				}
 				
 				else if((temp.getFatherObject()==null)&&(temp.getMotherObject()!= null)){
 					if(!temp.getFather().equals("?")){
 						Person blank = new Person(temp.getFather(), 'M', 0, "?", "?", null, null);
 						levelPeople.add(blank);
+					}
+					else{
+						levelPeople.add(unknown);
 					}
 					levelPeople.add(temp.getMotherObject());
 				}
@@ -98,7 +121,7 @@ public class TreePrinter {
 		}
 		//levelPeople.remove(temp);
 		System.out.println(); //go to a new line
-		viewPanel.append("\n");
+		viewPanel.append("\n\n");
 		
 		if(level>2){
 			printTree(people, level-1);

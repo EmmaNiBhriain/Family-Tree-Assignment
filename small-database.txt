@@ -14,3 +14,7 @@ Emily F 1800 Saige ?
 Saige F 1780 ? ?
 Isis F 1882 Jayde Trenton
 Trenton M 1853 Katie ?
+Emma F 1938 ? Marquise
+Rita F 1938 ? Marquise
+Anne F 1938 ? Marquise
+Rachel F 1938 ? Marquise
