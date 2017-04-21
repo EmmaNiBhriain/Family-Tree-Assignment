@@ -1,4 +1,4 @@
-package models;
+package userInterfaces;
 /**
  * 
  * @author Emma Ní Bhriain
@@ -13,6 +13,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import models.FileReader;
+import models.Serializer;
 public class UserInterface implements ActionListener{
 	//private MenuInterface menu = new MenuInterface();
 	private String title = "Family Tree";

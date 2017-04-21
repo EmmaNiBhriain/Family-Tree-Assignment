@@ -1,4 +1,4 @@
-package models;
+package userInterfaces;
 /**
  * 
  * @author Emma Ní Bhriain
@@ -18,6 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import models.FileReader;
+import models.Person;
+import models.TreePrinter;
 
 public class DisplayInterface implements ActionListener{
 	private JPanel topPanel = new JPanel();

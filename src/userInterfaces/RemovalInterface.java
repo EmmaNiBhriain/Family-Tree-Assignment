@@ -1,4 +1,4 @@
-package models;
+package userInterfaces;
 /**
  * 
  * @author Emma Ní Bhriain
@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import models.FileReader;
 
 public class RemovalInterface implements ActionListener{
 	private FileReader fileReader;

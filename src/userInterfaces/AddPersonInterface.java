@@ -1,4 +1,4 @@
-package models;
+package userInterfaces;
 /**
  * 
  * @author Emma Ní Bhriain
@@ -20,6 +20,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import models.FileReader;
+import models.Person;
 
 public class AddPersonInterface implements ActionListener{
 	private FileReader fileReader;
