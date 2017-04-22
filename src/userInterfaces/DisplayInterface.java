@@ -43,7 +43,6 @@ public class DisplayInterface implements ActionListener {
 	private String title = "Family Tree";
 	private JButton returnButton = new JButton("Return to Main Menu");
 	private JButton backButton = new JButton("Back");
-	private JButton backButton2 = new JButton("Back to Person View");
 	JButton viewParents = new JButton("View Parents' Details");
 
 	private JPanel namePanel;
@@ -53,8 +52,6 @@ public class DisplayInterface implements ActionListener {
 	private JPanel motherNamePanel;
 	private JPanel fatherNamePanel;
 	private JPanel parentPanel = new JPanel(new GridLayout(0, 1));
-
-	private ActionEvent confirmed;
 
 	private boolean showFather = false;
 	private boolean showMother = false;
@@ -213,19 +210,6 @@ public class DisplayInterface implements ActionListener {
 			DisplayInterface view = new DisplayInterface(fileReader);
 		}
 		
-		else if (event.getActionCommand().equals("Back to Person View")) {
-			//frame1.dispose();
-			frame2.dispatchEvent(new WindowEvent(frame2, WindowEvent.WINDOW_CLOSING));
-			frame2 = new JFrame();
-			textArea.setText(null);
-			showMother = false;
-			showFather = false;
-			parentPanel.removeAll();
-			createView(name.getText());
-			//DisplayInterface view = new DisplayInterface(fileReader);
-		}
-
-
 		else if (event.getActionCommand().equals("View Parents' Details")) {
 			if (fileReader.getPeopleMap().containsKey(viewPerson.getFather())) {
 				showFather = true;
@@ -467,7 +451,8 @@ public class DisplayInterface implements ActionListener {
 		panel.add(bottom, BorderLayout.SOUTH);
 
 		instructions = new JLabel("Your Ancestors: ");
-		backButton2.addActionListener(this);
+		backButton.addActionListener(this);
+
 
 		// if((showFather == false)&&(showMother == false)){
 		top.add(instructions);
@@ -533,12 +518,8 @@ public class DisplayInterface implements ActionListener {
 		if ((showFather == false) && (showMother == false)) {
 			middle.add(textArea);
 			middle.add(parentPanel);
-			bottom.add(backButton);
 		}
-		else
-			bottom.add(backButton2);
-		// panel.add(comp)
-
+		bottom.add(backButton);
 		return panel;
 	}
 

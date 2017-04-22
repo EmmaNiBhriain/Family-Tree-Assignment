@@ -32,7 +32,7 @@ public class FileReader {
 	private boolean DEBUG = false;
 	
 	public FileReader(){
-		readFile(smallData);
+		readFile(largeData);
 		buildConnections();
 		
 	}
@@ -70,7 +70,6 @@ public class FileReader {
 	 * Do the same for the mother.
 	 * 
 	 * For each parent, add them to a hashmap along with their children.
-	 * TODO error checking for when a parent is not in the map but is not ?, null pointer exception?
 	 */
 	public void buildConnections(){
 		while(peopleStack.size() != 0){
@@ -127,7 +126,7 @@ public class FileReader {
 	 * @param addedPerson
 	 */
 	public void add(Person addedPerson){		
-		peopleStack.push(addedPerson); //TODO USE something other than a stack because I need to check if new person is a parent of any person
+		peopleStack.push(addedPerson); 
 		peopleMap.put(addedPerson.getName(), addedPerson);
 		buildConnections();		//as the only item in the stack, get the parents from the ma
 		
@@ -189,8 +188,6 @@ public class FileReader {
 	 * If the parameters are not null, update the relevant fields.
 	 * If updating a parent, it is necessary to check if the new parent is in the Hashmap and if so, 
 	 * point the relevant parent object field to the parent object.
-	 * TODO if a parent is changed, make the changes for any siblings who point to the same person object
-	 * TODO if a parent name is changed, change the parent name in the field for the child
 	 * @param person
 	 * @param name
 	 * @param gender
@@ -447,13 +444,7 @@ public class FileReader {
 	
 	
 	public static void main(String[] args){
-		//FileReader filer = new FileReader();
-		//Person viewFamily1 = filer.getPeopleMap().get("Isis");
-		//TreePrinter.print(viewFamily1);
-		//filer.readFile(smallData);
-		//filer.buildConnections();
 		UserInterface ui = new UserInterface();
-		//MenuInterface menu = new MenuInterface();
 	}
 
 	public Stack<Person> getPeopleStack() {

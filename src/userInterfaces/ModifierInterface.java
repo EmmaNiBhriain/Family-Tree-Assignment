@@ -234,7 +234,7 @@ public class ModifierInterface implements ActionListener{
 		
 		Panel7.add(deathL);
 		if(modifyPerson.getDeathYear()==0){
-			death = new JTextField("unknown");
+			death = new JTextField("0");
 		}
 		else
 			death = new JTextField(Integer.toString(modifyPerson.getDeathYear()));
