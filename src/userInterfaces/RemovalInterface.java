@@ -48,7 +48,6 @@ public class RemovalInterface implements ActionListener{
 		JPanel contentPane = (JPanel)frame.getContentPane();
 		contentPane.setPreferredSize(new Dimension(500, 400));
 		contentPane.setLayout(new BorderLayout(10,0));
-		//TODO set border if you like
 		JPanel displayPane = makePanel(contentPane);
 		contentPane = displayPane;
 		frame.pack();

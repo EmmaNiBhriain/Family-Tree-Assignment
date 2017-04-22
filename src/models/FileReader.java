@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JOptionPane;
+
 import userInterfaces.UserInterface;
 
 import java.util.Scanner;
@@ -373,34 +375,75 @@ public class FileReader {
 		return person;
 	}
 	
-	
-	public void viewAncestors(Person root, String indent){
-		if (root == null)
-			return;
-		System.out.println(" " + indent + root.getName());
-		if ((root.getFatherObject() != null) && (root.getMotherObject() == null)){
-			if(!root.getMother().equals("?"))
-				System.out.println("  " + indent + root.getMother());
-			viewAncestors(root.getFatherObject(), indent + " ");
+	/**
+	 * Find the siblings of a person
+	 * If the person's mother is in the parent map, i.e. there is a record of her children
+	 * Retrieve the list of her children, remove the person of interest and the remaining children are the person's siblings
+	 * 
+	 * If the father is in the parent map and the mother is not, Retrieve a list of his children, remove the person of interest and return the list
+	 * @param person
+	 */
+	public String[] getSiblings(Person person){
+		System.out.println("siblings");
+		ArrayList<String> sibling;
+		String [] displaySiblings;
+		if (parentMap.containsKey(person.getMother())) {
+			sibling = parentMap.get(person.getMother());
+			int motherSide = sibling.size() - 1; // get the number of children minus the person
+			//sibling.remove(person.getName());
+
+			if (motherSide > 0) {
+				displaySiblings = sibling.toArray(new String[motherSide]);
+				for(int i=0; i<motherSide+1; i++){
+					if(displaySiblings[i].equals(person.getName())){
+						displaySiblings[i] = null;
+					}
+				}
+				return displaySiblings;
+				//returnJOptionPane.showMessageDialog(null, displaySiblings, "Siblings: ", JOptionPane.PLAIN_MESSAGE);
+			}
+			else{
+				displaySiblings = new String[1];
+				displaySiblings[1] = "No Siblings";
+				System.out.println("no siblings");
+				return displaySiblings;
+
+			}
+		} 
+		else if (parentMap.containsKey(person.getFather())) {
+			sibling = parentMap.get(person.getFather());
+			int fatherSide = sibling.size() - 1; // get the number of children minus the person
+			//sibling.remove(person.getName());
+
+			if (fatherSide > 0) {
+				displaySiblings = sibling.toArray(new String[fatherSide]);
+				for(int i=0; i<fatherSide+1; i++){
+					if(displaySiblings[i].equals(person.getName())){
+						displaySiblings[i] = null;
+					}
+				}
+				return displaySiblings;
+				//return JOptionPane.showMessageDialog(null, displaySiblings, "Siblings: ", JOptionPane.PLAIN_MESSAGE);
+			}
+			else{
+				displaySiblings = new String[1];
+				displaySiblings[1] = "No Siblings";
+				System.out.println("no siblings");
+				return displaySiblings;
+
+				
+			}
+
 		}
-		else if ((root.getMotherObject() != null) && (root.getFatherObject() == null)){
-			if(!root.getFather().equals("?"))
-				System.out.println("  " + indent + root.getFather());
-			viewAncestors(root.getMotherObject(), indent + " ");
+
+		else {
+			displaySiblings = new String[1];
+			displaySiblings[0] = "No Siblings";
+			System.out.println("no siblings");
+			return displaySiblings;
 		}
-		else if ((root.getMotherObject() != null) && (root.getFatherObject() != null)) {
-			Person left = root.getFatherObject();
-			viewAncestors(root.getMotherObject(), indent + " ");
-			viewAncestors(left, indent + " ");
-		}
-		else if((root.getMotherObject() == null) && (root.getFatherObject() == null)){
-			if(!root.getFather().equals("?"))
-				System.out.println("  " + indent + root.getFather());
-			if(!root.getMother().equals("?"))
-				System.out.println("  " + indent + root.getMother());
-		}
+
 	}
-	
 	
 	
 	public static void main(String[] args){

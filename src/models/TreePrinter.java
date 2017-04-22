@@ -34,14 +34,6 @@ public class TreePrinter {
 	 * Pass the root in the List and height of the tree
 	 * 
 	 * 
-	 * Calculate the size of the array for the current layer of the tree by subtracting the level from the height 
-	 * and raise 2 to the power of this value 
-	 * 
-	 * For each member of the array, print out the name of each person stored in it
-	 * 
-	 * 
-	 * 
-	 * TODO use hashmap instead
 	 * @param levelPeople
 	 * @param level
 	 */
@@ -156,17 +148,12 @@ public class TreePrinter {
 	  
 	/**
 	 * Get the height of the tree, starting with the given person as the root
-	 * TODO if the parent object is null but the name of the parent is known, add a level to the tree
 	 * @param person
 	 * @return
 	 */
 	private static int getHeight(Person person){
 		if(person == null)
 			return 1;
-		/*if((person.getGender() == 'M')&&(!person.getFather().equals("?"))&&(person.getFatherObject().equals(null)))
-			return 1;
-		else if((person.getGender() == 'F')&&(!person.getMother().equals("?"))&&(person.getMotherObject().equals(null)))
-			return 1;*/
 		else{
 			int fatherTree = getHeight(person.getFatherObject());
 			int motherTree = getHeight(person.getMotherObject());
