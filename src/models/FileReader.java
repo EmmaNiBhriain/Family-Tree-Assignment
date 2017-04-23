@@ -401,7 +401,7 @@ public class FileReader {
 			}
 			else{
 				displaySiblings = new String[1];
-				displaySiblings[1] = "No Siblings";
+				displaySiblings[0] = "No Siblings";
 				System.out.println("no siblings");
 				return displaySiblings;
 
@@ -424,7 +424,7 @@ public class FileReader {
 			}
 			else{
 				displaySiblings = new String[1];
-				displaySiblings[1] = "No Siblings";
+				displaySiblings[0] = "No Siblings";
 				System.out.println("no siblings");
 				return displaySiblings;
 
